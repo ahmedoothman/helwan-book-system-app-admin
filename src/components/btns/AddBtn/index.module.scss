@@ -1,0 +1,33 @@
+@import '../../../sass/main.scss';
+
+.btn {
+  background-color: $color-main-dark;
+  color: $color-main-light-3;
+  font-family: $main-font;
+  border: 0.1rem solid $color-main-dark;
+  font-size: 1.3rem;
+  font-weight: 500;
+  height: 4.3rem;
+  width: auto;
+  border-radius: 0.7rem;
+  padding: 0rem 1rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  img {
+    margin-left: 0.5rem;
+    width: 2rem;
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg)
+      brightness(100%) contrast(100%);
+  }
+}
+.btn:hover {
+  background-color: $color-main-light-3;
+  color: $color-main-dark;
+  // disable filter
+  img {
+    filter: none;
+  }
+}

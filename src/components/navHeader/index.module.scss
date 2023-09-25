@@ -1,0 +1,26 @@
+@import '../../sass/main.scss';
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 4rem;
+  align-items: center;
+  background-color: $color-main-light;
+  font-size: 1.4rem;
+  a {
+    text-decoration: none;
+    color: $color-main-dark;
+    font-weight: 700;
+    cursor: pointer;
+  }
+}
+@media only screen and (max-width: 800px) {
+  .container {
+    display: flex;
+    /* justify-content: center; */
+    padding: 1rem 1rem;
+    align-items: center;
+    background-color: #cdcdcd;
+    font-size: 1.4rem;
+  }
+}

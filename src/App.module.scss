@@ -1,0 +1,17 @@
+@import 'sass/main.scss';
+body {
+  margin: 0px;
+  padding: 0px;
+  font-family: $main-font;
+  background-color: $color-main-light-2;
+}
+html {
+  // box-sizing: border-box;
+  font-size: 62.5%; // 1rem = 10px, 10px/16px = 62.5%
+}
+
+@media only screen and (max-width: 800px) {
+  html {
+    font-size: 50%;
+  }
+}

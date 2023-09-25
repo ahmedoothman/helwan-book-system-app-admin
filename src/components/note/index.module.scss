@@ -1,0 +1,23 @@
+@import '../../sass/main.scss';
+
+.note {
+  p {
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
+    background-color: $color-main-light;
+    width: 30rem;
+    padding: 2rem;
+    font-size: 1.4rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    span {
+      font-size: 1.6rem;
+      margin-left: 0.4rem;
+      background-color: $color-main-light-3;
+      border: 0.1rem solid $color-secondary-dark;
+      color: $color-secondary-dark;
+      padding: 0.2rem;
+      border-radius: 0.5rem;
+      width: 100%;
+    }
+  }
+}

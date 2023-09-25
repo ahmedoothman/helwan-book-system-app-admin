@@ -1,0 +1,26 @@
+@import '../../sass/main.scss';
+.container {
+  display: flex;
+  align-items: center;
+  margin: 0rem;
+  margin-bottom: 2rem;
+  color: $color-main-dark;
+}
+.line {
+  flex: 1;
+  height: 0.1rem;
+  background-color: $color-main-dark;
+}
+
+.word {
+  padding: 0 1rem;
+  font-size: 1.5rem;
+}
+
+.word::before,
+.word::after {
+  content: '';
+  flex: 1;
+  height: 1rem;
+  background-color: $color-main-dark;
+}

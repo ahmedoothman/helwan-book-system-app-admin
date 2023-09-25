@@ -1,0 +1,11 @@
+@import '../../../sass/main.scss';
+.document-container {
+  background-color: #fff;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  position: relative;
+  //   style embeded
+  embed {
+    min-height: fit-content;
+  }
+}

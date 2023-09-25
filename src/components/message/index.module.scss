@@ -1,0 +1,76 @@
+@import '../../sass/main.scss';
+
+.message {
+  margin-top: 10rem;
+  background-color: $color-main-dark;
+  color: $color-main-light-3;
+  padding: 1rem 6rem;
+  border-radius: 1rem;
+  font-size: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30rem;
+  margin: 10rem auto;
+  text-align: center;
+  &__icon {
+    width: 5rem;
+    img {
+      width: 100%;
+    }
+  }
+  p {
+    margin: 0;
+  }
+}
+
+.error {
+  margin-top: 10rem;
+  background-color: $color-main-danger;
+  color: $color-main-light-3;
+  padding: 1rem 6rem;
+  border-radius: 1rem;
+  font-size: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30rem;
+  margin: 10rem auto;
+  text-align: center;
+  &__icon {
+    width: 5rem;
+    img {
+      width: 100%;
+    }
+  }
+  p {
+    margin: 0;
+  }
+}
+.load {
+  margin-top: 10rem;
+  background-color: $color-main-light-3;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+  color: $color-secondary-dark;
+  padding: 1rem 6rem;
+  border-radius: 1rem;
+  font-size: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30rem;
+  margin: 10rem auto;
+  text-align: center;
+  &__icon {
+    width: 5rem;
+    img {
+      width: 100%;
+    }
+  }
+  p {
+    margin: 0;
+  }
+}

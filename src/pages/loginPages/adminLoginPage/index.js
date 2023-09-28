@@ -6,6 +6,7 @@ import styles from './index.module.scss';
 import { NavHeader } from '../../../components/navHeader/index';
 import { Input } from '../../../components/inputs/InputField/index';
 import { BtnSmall } from '../../../components/btns/btnSmall/index';
+import { MainContainer } from '../../../components/mainContainer';
 // reducer
 import {
   loginPageStatesInitialState,
@@ -111,26 +112,28 @@ const LoginPage = React.memo(() => {
   };
   return (
     <Fragment>
-      {<NavHeader title={'تسجيل الدخول'} mode={'title'} />}
+      {<NavHeader title={'تسجيل الدخول'} mode={'title'} hideBack={true} />}
       {/* login box */}
-      <form className={styles['login-box']} onSubmit={loginHandler}>
-        <Input title={'اسم المستخدم'} type='TEXT' ref={userNameRef} />
-        <Input title={'كلمة السر'} type='PASSWORD' ref={passwordRef} />
-        <br />
-        {loginPageStates.pending && (
-          <BtnSmall
-            title={
-              <CircularProgress
-                size={20}
-                sx={{
-                  color: '#a18a00',
-                }}
-              />
-            }
-          />
-        )}
-        {!loginPageStates.pending && <BtnSmall title={'دخول'} />}
-      </form>
+      <MainContainer>
+        <form className={styles['login-box']} onSubmit={loginHandler}>
+          <Input title={'اسم المستخدم'} type='TEXT' ref={userNameRef} />
+          <Input title={'كلمة السر'} type='PASSWORD' ref={passwordRef} />
+          <br />
+          {loginPageStates.pending && (
+            <BtnSmall
+              title={
+                <CircularProgress
+                  size={20}
+                  sx={{
+                    color: '#a18a00',
+                  }}
+                />
+              }
+            />
+          )}
+          {!loginPageStates.pending && <BtnSmall title={'دخول'} />}
+        </form>
+      </MainContainer>
       {/* ********** ERROR SNACKBAR ********** */}
       <Snackbar
         open={loginPageStates.error}

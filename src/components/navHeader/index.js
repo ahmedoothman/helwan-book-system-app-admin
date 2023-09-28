@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 /***************************************************************************/
 /* Name : NavHeader React Component */
 /***************************************************************************/
-const NavHeader = React.memo(({ title, mode }) => {
+const NavHeader = React.memo(({ title, mode, hideBack }) => {
   const navigate = useNavigate();
   /***************************************************************************/
   /* Name : backwardHandler */
@@ -28,7 +28,7 @@ const NavHeader = React.memo(({ title, mode }) => {
       <div className={styles['container']}>
         <div>{title}</div>
         <div className={styles['links']}>
-          {<a onClick={backwardHandler}>رجوع</a>}
+          {!hideBack && <a onClick={backwardHandler}>رجوع</a>}
         </div>
       </div>
     </Fragment>

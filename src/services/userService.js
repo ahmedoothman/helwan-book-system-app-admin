@@ -57,3 +57,36 @@ export const studentLoginService = async (studentId, nationalID) => {
     }
   }
 };
+/**********************************************/
+/* Name: get Role */
+/* Description: get Role */
+/**********************************************/
+export const getRoleService = async () => {
+  const token = Cookies.get('token');
+  try {
+    const response = await axios.get(`${api_url}/api/v1/users/getRole`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return {
+      status: 'success',
+      role: response.data.data.role,
+      passwordChanged: response.data.data.passwordChanged,
+      privilege: response.data.data.privilege,
+    };
+  } catch (error) {
+    if (error.code === 'ERR_NETWORK') {
+      return {
+        status: 'error',
+        statusCode: error.code,
+        message: 'خطأ في الاتصال بالخادم',
+      };
+    } else {
+      return {
+        status: 'error',
+        message: error.response.data.message,
+      };
+    }
+  }
+};

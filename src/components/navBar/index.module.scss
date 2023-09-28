@@ -1,0 +1,36 @@
+@import '../../sass/main.scss';
+.nav-container {
+  background-color: $color-main-light-3;
+}
+.nav-container ul {
+  display: flex;
+  justify-content: flex-start;
+  margin: 0;
+}
+.nav-container ul a {
+  list-style: none;
+  margin: 0 0.2rem;
+  padding: 1rem 1rem;
+  color: $color-main-dark;
+  text-decoration: none;
+  font-family: $main-font;
+  font-size: 1.35rem;
+  padding: 0 0.5rem;
+  transition: all 0.3s ease-in-out;
+  padding: 1rem;
+}
+.nav-container ul a:last-child {
+  margin-right: auto;
+}
+.active-tab {
+  background-color: $color-main-light-2-2;
+  height: 100%;
+}
+.nav-container ul a:hover {
+  background-color: $color-main-light-2-2;
+  cursor: pointer;
+}
+.nav-container ul a:last-child:hover {
+  background-color: $color-main-light-3;
+  cursor: pointer;
+}

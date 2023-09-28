@@ -13,7 +13,7 @@ import { getRoleService } from '../../services/userService';
 /***************************************************************************/
 const NavBar = React.memo(({ title }) => {
   const navigate = useNavigate();
-  const [role, setRole] = useState('NOT');
+  const [role, setRole] = useState('SUPERADMIN'); // NOT ADMIN PUBLISHER SUPERADMIN
   /***************************************************************************/
   /* Name : logOutHandler */
   /* Description : logOutHandler */
@@ -30,8 +30,8 @@ const NavBar = React.memo(({ title }) => {
   useEffect(() => {
     (async () => {
       // calling load
-      const { role } = await getRoleService();
-      setRole(role);
+      // const { role } = await getRoleService();
+      // setRole(role);
     })();
   }, []);
 
@@ -50,6 +50,16 @@ const NavBar = React.memo(({ title }) => {
             </NavLink>
             {role === 'SUPERADMIN' && role !== 'NOT' && (
               <NavLink
+                to='/management/uploadData'
+                className={({ isActive, isPending }) =>
+                  isPending ? 'pending' : isActive ? styles['active-tab'] : ''
+                }
+              >
+                رفع البيانات
+              </NavLink>
+            )}
+            {role === 'SUPERADMIN' && role !== 'NOT' && (
+              <NavLink
                 to='/management/adminsManagement'
                 className={({ isActive, isPending }) =>
                   isPending ? 'pending' : isActive ? styles['active-tab'] : ''
@@ -66,6 +76,16 @@ const NavBar = React.memo(({ title }) => {
                 }
               >
                 تحديث بيانات الحساب
+              </NavLink>
+            )}
+            {role === 'SUPERADMIN' && role !== 'NOT' && (
+              <NavLink
+                to='/settings/updateAccountInfo'
+                className={({ isActive, isPending }) =>
+                  isPending ? 'pending' : isActive ? styles['active-tab'] : ''
+                }
+              >
+                تدمير
               </NavLink>
             )}
             <NavLink

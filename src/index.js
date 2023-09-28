@@ -4,7 +4,6 @@ import './index.module.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import store from './store/index';
-
 // router
 import { BrowserRouter } from 'react-router-dom';
 // redux

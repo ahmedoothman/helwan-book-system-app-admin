@@ -24,6 +24,18 @@
   /* small a */
   display: inline-block;
   width: 2.8rem;
+  &:nth-child(3) {
+    background-color: $color-main-light-3;
+    width: 2.8rem;
+    height: 2.8rem;
+    padding: 0;
+    border: none;
+    border-radius: 0.6rem;
+    img {
+      width: 100%;
+      margin: 0;
+    }
+  }
 }
 .icons a img {
   width: 100%;

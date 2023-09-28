@@ -90,3 +90,69 @@ export const getRoleService = async () => {
     }
   }
 };
+/***************************************************************************/
+/* Name : get admin  */
+/* Description : get admin  */
+/***************************************************************************/
+export const getMe = async () => {
+  const token = Cookies.get('token');
+  try {
+    const response = await axios.get(`${api_url}/api/v1/users/getMe`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return {
+      status: 'success',
+      data: response.data.data.user,
+    };
+  } catch (error) {
+    if (error.code === 'ERR_NETWORK') {
+      return {
+        status: 'error',
+        statusCode: error.code,
+        message: 'خطأ في الاتصال بالخادم',
+      };
+    } else {
+      return {
+        status: 'error',
+        message: error.response.data.message,
+      };
+    }
+  }
+};
+/***************************************************************************/
+/* Name : update account info  */
+/* Description : update account info  */
+/***************************************************************************/
+export const updateAccountInfoService = async (data) => {
+  const token = Cookies.get('token');
+  try {
+    const response = await axios.patch(
+      `${api_url}/api/v1/users/updateSuperAdmin`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return {
+      status: 'success',
+      data: response.data.user,
+    };
+  } catch (error) {
+    if (error.code === 'ERR_NETWORK') {
+      return {
+        status: 'error',
+        statusCode: error.code,
+        message: 'خطأ في الاتصال بالخادم',
+      };
+    } else {
+      return {
+        status: 'error',
+        message: error.response.data.message,
+      };
+    }
+  }
+};

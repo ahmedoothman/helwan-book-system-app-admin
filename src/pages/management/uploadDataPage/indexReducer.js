@@ -2,7 +2,8 @@ export const componentStatesInitialState = {
   success: false,
   error: false,
   errorMessage: '',
-  pending: false,
+  pendingDoctors: false,
+  pendingCourses: false,
 };
 export const componentStatesReducer = (state, action) => {
   if (action.type === 'SUCCESS') {
@@ -11,7 +12,8 @@ export const componentStatesReducer = (state, action) => {
       success: true,
       error: false,
       successMessage: action.successMessage,
-      pending: false,
+      pendingDoctors: false,
+      pendingCourses: false,
     };
   }
   if (action.type === 'ERROR') {
@@ -20,23 +22,33 @@ export const componentStatesReducer = (state, action) => {
       success: false,
       error: true,
       errorMessage: action.errorMessage,
-      pending: false,
+      pendingDoctors: false,
+      pendingCourses: false,
     };
   }
-  if (action.type === 'PENDING') {
+  if (action.type === 'PENDING-DOCTORS') {
     return {
       ...state,
       success: false,
       error: false,
       errorMessage: '',
-      pending: true,
+      pendingDoctors: true,
     };
   }
-
+  if (action.type === 'PENDING-COURSES') {
+    return {
+      ...state,
+      success: false,
+      error: false,
+      errorMessage: '',
+      pendingCourses: true,
+    };
+  }
   if (action.type === 'CLEAR') {
     return {
       ...state,
-      pending: false,
+      pendingDoctors: false,
+      pendingCourses: false,
       success: false,
       error: false,
     };

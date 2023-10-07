@@ -26,9 +26,9 @@ import CircularProgress from '@mui/material/CircularProgress';
 // router
 import { useNavigate } from 'react-router-dom';
 // services
-import { updateAccountInfoService, getMe } from '../../../services/userService';
+import { updateAccountInfoService } from '../../../services/settingsService';
 // get role
-import { getRoleService } from '../../../services/userService';
+import { getRoleService, getMe } from '../../../services/adminService';
 /***************************************************************************/
 /* Name : UpdateAccountInfo React Component */
 /***************************************************************************/
@@ -45,20 +45,17 @@ const UpdateAccountInfo = React.memo(() => {
     updateAccoundInfoStatesInitialState
   );
   // role state
-  const [role, setRole] = useState('SUPERADMIN'); // NOT ADMIN PUBLISHER SUPERADMIN
-  const [passwordChanged, setPasswordChanged] = useState(false); // true false
+  const [role, setRole] = useState('NOT'); // NOT ADMIN PUBLISHER SUPERADMIN
   /******************************************************************/
   /* useEffect */
   /******************************************************************/
   useEffect(() => {
     (async () => {
       // get role
-      // const { role } = await getRoleService();
-      // const { passwordChanged } = await getRoleService();
-      // setRole(role);
-      // setPasswordChanged(passwordChanged);
+      const { role } = await getRoleService();
+      setRole(role);
       // get me
-      // await getMeHandler();
+      await getMeHandler();
     })();
   }, []);
   /******************************************************************/
@@ -186,8 +183,7 @@ const UpdateAccountInfo = React.memo(() => {
     <Fragment>
       {<NavHeader title={'تحديث بيانات الحساب'} />}
       {/* login box */}
-      {((role === 'ADMIN' && passwordChanged === false) ||
-        role === 'SUPERADMIN') && (
+      {role === 'SUPERADMIN' && role !== 'NOT' && (
         <div className={styles['login-box']}>
           <Input title={'الاسم'} type='text' ref={nameRef} />
           <Input title={'اسم المستخدم'} type='text' ref={userNameRef} />
@@ -216,7 +212,7 @@ const UpdateAccountInfo = React.memo(() => {
           )}
         </div>
       )}
-      {role === 'ADMIN' && role !== 'NOT' && passwordChanged === true && (
+      {role !== 'SUPERADMIN' && role !== 'NOT' && (
         <Message text='لا يمكنك الوصول لهذه الصفحة' type='error' />
       )}
       {/* ********** ERROR SNACKBAR ********** */}

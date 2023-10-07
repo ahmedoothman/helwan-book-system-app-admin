@@ -1,11 +1,14 @@
 // react
-import React, { Fragment, useEffect, useReducer, useRef } from 'react';
+import React, { Fragment, useEffect, useReducer, useState } from 'react';
 // styles
 import styles from './index.module.scss';
 // components
 import { MainContainer } from '../../../components/mainContainer';
 import { InputFileWide } from '../../../components/inputs/inputFileWide';
 import { NavHeader } from '../../../components/navHeader';
+import { Message } from '../../../components/message';
+// libs
+import FormData from 'form-data';
 // reducer
 import {
   componentStatesInitialState,
@@ -18,14 +21,21 @@ import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
 // redux
 import { useDispatch } from 'react-redux';
-import { uiActions } from '../../../store/ui-slice';
 // services
+import {
+  getRoleService,
+  uploadDoctorService,
+  uploadCoursesService,
+} from '../../../services/adminService';
+
 /***************************************************************************/
 /* Name : UploadData React Component */
 /***************************************************************************/
 const UploadData = React.memo(() => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  // roles
+  const [role, setRole] = useState('NOT'); // NOT ADMIN PUBLISHER SUPERADMIN
   // reducer
   const [uploadDataStates, dispatchUploadDataStates] = useReducer(
     componentStatesReducer,
@@ -35,7 +45,11 @@ const UploadData = React.memo(() => {
   /* useEffect */
   /******************************************************************/
   useEffect(() => {
-    (async () => {})();
+    (async () => {
+      // get role
+      const { role } = await getRoleService();
+      setRole(role);
+    })();
   }, []);
   /******************************************************************/
   /* handleCloseSnackbar */
@@ -46,35 +60,75 @@ const UploadData = React.memo(() => {
   /******************************************************************/
   /* uploadDoctorsData */
   /******************************************************************/
-  const uploadDoctorsDataHandler = async (file) => {};
+  const uploadDoctorsDataHandler = async (file) => {
+    dispatchUploadDataStates({ type: 'PENDING' });
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await uploadDoctorService(formData);
+    if (response.status === 'success') {
+      dispatchUploadDataStates({
+        type: 'SUCCESS',
+        successMessage: response.message,
+      });
+    } else {
+      dispatchUploadDataStates({
+        type: 'ERROR',
+        errorMessage: response.message,
+      });
+    }
+  };
   /******************************************************************/
   /* uploadCourses */
   /******************************************************************/
-  const uploadCoursesHandler = async (file) => {};
+  const uploadCoursesHandler = async (file) => {
+    dispatchUploadDataStates({ type: 'PENDING' });
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await uploadCoursesService(formData);
+    if (response.status === 'success') {
+      dispatchUploadDataStates({
+        type: 'SUCCESS',
+        successMessage: response.message,
+      });
+    } else {
+      dispatchUploadDataStates({
+        type: 'ERROR',
+        errorMessage: response.message,
+      });
+    }
+  };
   return (
     <Fragment>
       <NavHeader title='رفع البيانات' />
-      <MainContainer>
-        <br />
-        <br />
-        <div className={styles['upload-item']}>
-          <div className={styles['upload-item__title']}>
-            رفع بيانات الدكاترة
+      {role === 'SUPERADMIN' && (
+        <MainContainer>
+          <br />
+          <br />
+          <div className={styles['upload-item']}>
+            <div className={styles['upload-item__title']}>
+              رفع بيانات الدكاترة
+            </div>
+            <div className={styles['upload-item__content']}>
+              <InputFileWide
+                onClick={uploadDoctorsDataHandler}
+                tag={'doctors'}
+              />
+            </div>
           </div>
-          <div className={styles['upload-item__content']}>
-            <InputFileWide onClick={uploadDoctorsDataHandler} />
+          <br />
+          <div className={styles['upload-item']}>
+            <div className={styles['upload-item__title']}>
+              رفع بيانات المقررات
+            </div>
+            <div className={styles['upload-item__content']}>
+              <InputFileWide onClick={uploadCoursesHandler} tag={'courses'} />
+            </div>
           </div>
-        </div>
-        <br />
-        <div className={styles['upload-item']}>
-          <div className={styles['upload-item__title']}>
-            رفع بيانات المقررات
-          </div>
-          <div className={styles['upload-item__content']}>
-            <InputFileWide onClick={uploadCoursesHandler} />
-          </div>
-        </div>
-      </MainContainer>
+        </MainContainer>
+      )}
+      {role !== 'SUPERADMIN' && role !== 'NOT' && (
+        <Message text={'لا يمكنك الوصول لهذه الصفحة'} type='error' />
+      )}
       {/* ********** SUCCESS SNACKBAR ********** */}
       <Snackbar
         open={uploadDataStates.success}

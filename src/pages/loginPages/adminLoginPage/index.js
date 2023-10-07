@@ -86,11 +86,12 @@ const LoginPage = React.memo(() => {
       // dispatch states
       dispatchLoginPageStates({ type: 'SUCCESS' });
       if (response.user.passwordChanged === true) {
+        console.log(response.user);
         // redirect to dashboard
-        navigate('/admin/studentsInfo');
+        navigate('/management/books');
       } else {
         // redirect to change password
-        navigate('/admin/changePassword');
+        navigate('/settings/changePassword');
       }
     } else {
       // dispatch states

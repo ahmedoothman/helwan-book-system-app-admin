@@ -6,14 +6,14 @@ import { NavLink, useNavigate } from 'react-router-dom';
 // cookies
 import Cookies from 'js-cookie';
 // get role
-import { getRoleService } from '../../services/userService';
+import { getRoleService } from '../../services/adminService';
 // redux
 /***************************************************************************/
 /* Name : NavHeader React Component */
 /***************************************************************************/
 const NavBar = React.memo(({ title }) => {
   const navigate = useNavigate();
-  const [role, setRole] = useState('SUPERADMIN'); // NOT ADMIN PUBLISHER SUPERADMIN
+  const [role, setRole] = useState('NOT'); // NOT ADMIN PUBLISHER SUPERADMIN
   /***************************************************************************/
   /* Name : logOutHandler */
   /* Description : logOutHandler */
@@ -29,9 +29,9 @@ const NavBar = React.memo(({ title }) => {
   // useEffect
   useEffect(() => {
     (async () => {
-      // calling load
-      // const { role } = await getRoleService();
-      // setRole(role);
+      // calling role
+      const { role } = await getRoleService();
+      setRole(role);
     })();
   }, []);
 
@@ -85,7 +85,7 @@ const NavBar = React.memo(({ title }) => {
                   isPending ? 'pending' : isActive ? styles['active-tab'] : ''
                 }
               >
-                تدمير
+                اعادة التهيئة
               </NavLink>
             )}
             <NavLink

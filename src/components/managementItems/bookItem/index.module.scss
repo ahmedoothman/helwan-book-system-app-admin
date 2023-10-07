@@ -8,6 +8,7 @@
   width: 30rem;
   padding: 1rem;
   position: relative;
+  color: $color-main-dark;
   .book-img {
     width: 10rem;
     margin: auto;
@@ -25,14 +26,14 @@
       margin-bottom: 1rem;
       span {
         background-color: $color-main-light-3;
-        color: $color-secondary-dark;
+        color: $color-secondary-light;
         border-radius: 0.6rem;
-        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
         padding: 0.2rem;
         display: block;
         width: 8rem;
         margin-left: 1rem;
-        font-size: 1.3rem;
+        font-size: 1.4rem;
       }
       p {
         margin: 0;
@@ -42,7 +43,7 @@
   }
   .book-actions {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     width: 25rem;
     margin: auto;
@@ -52,24 +53,17 @@
       align-items: center;
       background-color: $color-main-dark;
       border: 0.1rem solid $color-main-dark;
+      color: $color-main-light-3;
       border-radius: 1rem;
       padding: 0.5rem 1rem;
       cursor: pointer;
       transition: all 0.3s ease-in-out;
-      color: $color-main-light-3;
       font-family: $main-font;
       font-size: 1.2rem;
+      margin-left: 0.5rem;
       img {
         width: 2rem;
         margin-left: 0.3rem;
-      }
-      &:nth-child(2) {
-        background-color: $color-main-success;
-        border: 0.1rem solid $color-main-success;
-      }
-      &:last-child {
-        background-color: $color-main-danger;
-        border: 0.1rem solid $color-main-danger;
       }
       &:hover {
         background-color: $color-main-light-3;
@@ -80,6 +74,64 @@
         img {
           filter: invert(0.7);
         }
+      }
+    }
+  }
+  .approve-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $color-main-success;
+    border: 0.1rem solid $color-main-success;
+    color: $color-main-light-3;
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-family: $main-font;
+    font-size: 1.2rem;
+    margin-left: 0.5rem;
+    img {
+      width: 2rem;
+      margin-left: 0.3rem;
+    }
+    &:hover {
+      background-color: $color-main-light-3;
+      color: $color-main-dark;
+      box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+      border: 0.1rem solid $color-main-dark;
+      // invert the color of the img to blue
+      img {
+        filter: invert(0.7);
+      }
+    }
+  }
+  .reject-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $color-main-danger;
+    border: 0.1rem solid $color-main-danger;
+    color: $color-main-light-3;
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-family: $main-font;
+    font-size: 1.2rem;
+    margin-left: 0.5rem;
+    img {
+      width: 2rem;
+      margin-left: 0.3rem;
+    }
+    &:hover {
+      background-color: $color-main-light-3;
+      color: $color-main-dark;
+      box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+      border: 0.1rem solid $color-main-dark;
+      // invert the color of the img to blue
+      img {
+        filter: invert(0.7);
       }
     }
   }
@@ -113,6 +165,28 @@
       p {
         margin: 0;
       }
+    }
+  }
+  .book-status-super {
+    background-color: $color-main-light-2;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 0.8rem;
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+    p {
+      margin: 0.5rem 0;
+      font-size: 1.25rem;
     }
   }
   .approved {

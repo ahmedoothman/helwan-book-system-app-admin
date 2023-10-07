@@ -10,6 +10,7 @@ import { BtnSmall } from '../../btns/btnSmall';
 const InputFileWide = React.memo((props) => {
   // file
   const [file, setFile] = useState(null);
+  const [tag, setTag] = useState(props.tag);
   /******************************************************************/
   /* useEffect */
   /******************************************************************/
@@ -22,21 +23,25 @@ const InputFileWide = React.memo((props) => {
   /******************************************************************/
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    props.onClick(file);
+    // build new file with encoded name
+    const newFile = new File([file], encodeURIComponent(file.name), {
+      type: file.type,
+    });
+    props.onClick(newFile);
   };
   return (
     <Fragment>
       <form className={styles['upload-container']} onSubmit={onSubmitHandler}>
         <input
-          type='file'
-          name='file'
-          id='file'
+          type={'file'}
+          name={props.tag}
+          id={props.tag}
           onChange={(e) => {
             setFile(e.target.files[0]);
           }}
         />
         <div className={styles['upload-btn']}>
-          <label htmlFor='file'>اختر ملف</label>
+          <label htmlFor={props.tag}>اختر ملف</label>
           <p>
             {file
               ? file.name.length > 20

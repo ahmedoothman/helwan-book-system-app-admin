@@ -1,5 +1,5 @@
 // react
-import React, { Fragment, useEffect, useReducer, useRef } from 'react';
+import React, { Fragment, useEffect, useReducer, useState } from 'react';
 // styles
 import styles from './index.module.scss';
 // components
@@ -19,9 +19,14 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 // redux
 import { useDispatch } from 'react-redux';
-
 // services
-// import { apiServices } from '../../../services/apiServices';
+import {
+  getRoleService,
+  getAllBooksService,
+  changeBookStatusService,
+} from '../../../services/adminService';
+// react-redux;
+import { useSelector } from 'react-redux';
 /***************************************************************************/
 /* Name : BooksPage React Component */
 /***************************************************************************/
@@ -33,11 +38,24 @@ const BooksPage = React.memo(() => {
     componentStatesReducer,
     componentStatesInitialState
   );
+  // role
+  const [role, setRole] = useState('NOT');
+  // states
+  const [books, setBooks] = useState([]);
+  // api_url
+  const [apiUrl, dispatchApiUrl] = useState(
+    useSelector((state) => state.ui.api_url)
+  );
   /******************************************************************/
   /* useEffect */
   /******************************************************************/
   useEffect(() => {
-    (async () => {})();
+    (async () => {
+      const { role } = await getRoleService();
+      setRole(role);
+      // get all books
+      await getAllBookHandler();
+    })();
   }, []);
   /******************************************************************/
   /* handleCloseSnackbar */
@@ -46,17 +64,90 @@ const BooksPage = React.memo(() => {
     dispatchBooksPageStates({ type: 'CLEAR' });
   };
   /******************************************************************/
-  /* functions */
+  /* getAllBookHandler */
   /******************************************************************/
+  const getAllBookHandler = async () => {
+    dispatchBooksPageStates({ type: 'PENDING' });
+    const response = await getAllBooksService();
+    if (response.status === 'success') {
+      setBooks(response.books);
+    } else {
+      dispatchBooksPageStates({
+        type: 'ERROR',
+        errorMessage: response.message,
+      });
+    }
+  };
+  /******************************************************************/
+  /* viewBookHandler */
+  /******************************************************************/
+  const viewBookHandler = (path) => {
+    console.log('view : ' + `${apiUrl}/${path}`);
+    window.open(`${apiUrl}/${path}`, '_blank');
+  };
+  /******************************************************************/
+  /* approveBookHandler */
+  /******************************************************************/
+  const approveBookHandler = async (bookId) => {
+    dispatchBooksPageStates({ type: 'PENDING' });
+    const response = await changeBookStatusService(bookId, 'accepted');
+    if (response.status === 'success') {
+      dispatchBooksPageStates({
+        type: 'SUCCESS',
+        successMessage: 'تمت الموافقة على الكتاب بنجاح',
+      });
+      await getAllBookHandler();
+    } else {
+      dispatchBooksPageStates({
+        type: 'ERROR',
+        errorMessage: response.message,
+      });
+    }
+  };
+  /******************************************************************/
+  /* rejectBookHandler */
+  /******************************************************************/
+  const rejectBookHandler = async (bookId) => {
+    dispatchBooksPageStates({ type: 'PENDING' });
+    const response = await changeBookStatusService(bookId, 'rejected');
+    if (response.status === 'success') {
+      dispatchBooksPageStates({
+        type: 'SUCCESS',
+        successMessage: 'تم رفض الكتاب بنجاح',
+      });
+      await getAllBookHandler();
+    } else {
+      dispatchBooksPageStates({
+        type: 'ERROR',
+        errorMessage: response.message,
+      });
+    }
+  };
   return (
     <Fragment>
       <NavHeader title='الكتب' />
       <br />
       <MainContainer>
         <div className={styles['books-list']}>
-          <BookItem />
-          <BookItem />
-          <BookItem />
+          {books.map((book) => {
+            return (
+              <BookItem
+                viewBookHandler={viewBookHandler}
+                approveBookHandler={approveBookHandler}
+                rejectBookHandler={rejectBookHandler}
+                key={book._id}
+                book={{
+                  ...book,
+                  status:
+                    role === 'ADMIN' ? book.adminStatus : book.publisherStatus,
+                  doctorName: 'محمد عبد الرحمن',
+                  courseName: 'البرمجة المتقدمة',
+                  faculty: 'العلوم',
+                  department: 'علوم الحاسب',
+                }}
+              />
+            );
+          })}
         </div>
       </MainContainer>
       {/* ********** SUCCESS SNACKBAR ********** */}

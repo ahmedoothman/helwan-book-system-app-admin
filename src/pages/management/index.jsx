@@ -3,18 +3,26 @@ import React, { Fragment, useEffect } from 'react';
 // styles
 import styles from './index.module.scss';
 // react-router
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 // components
 import { NavBar } from '../../components/navBar';
+// cookies
+import Cookies from 'js-cookie';
 /***************************************************************************/
 /* Name : ManagementMain React Component */
 /***************************************************************************/
 const ManagementMain = React.memo(() => {
+  const navigate = useNavigate();
   /******************************************************************/
   /* useEffect */
   /******************************************************************/
   useEffect(() => {
-    (async () => {})();
+    (async () => {
+      const token = Cookies.get('token');
+      if (!token) {
+        navigate('/');
+      }
+    })();
   }, []);
 
   /******************************************************************/

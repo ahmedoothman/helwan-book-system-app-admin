@@ -61,7 +61,7 @@ const UploadData = React.memo(() => {
   /* uploadDoctorsData */
   /******************************************************************/
   const uploadDoctorsDataHandler = async (file) => {
-    dispatchUploadDataStates({ type: 'PENDING' });
+    dispatchUploadDataStates({ type: 'PENDING-DOCTORS' });
     const formData = new FormData();
     formData.append('file', file);
     const response = await uploadDoctorService(formData);
@@ -81,7 +81,7 @@ const UploadData = React.memo(() => {
   /* uploadCourses */
   /******************************************************************/
   const uploadCoursesHandler = async (file) => {
-    dispatchUploadDataStates({ type: 'PENDING' });
+    dispatchUploadDataStates({ type: 'PENDING-COURSES' });
     const formData = new FormData();
     formData.append('file', file);
     const response = await uploadCoursesService(formData);
@@ -112,6 +112,7 @@ const UploadData = React.memo(() => {
               <InputFileWide
                 onClick={uploadDoctorsDataHandler}
                 tag={'doctors'}
+                pending={uploadDataStates.pendingDoctors}
               />
             </div>
           </div>
@@ -121,7 +122,11 @@ const UploadData = React.memo(() => {
               رفع بيانات المقررات
             </div>
             <div className={styles['upload-item__content']}>
-              <InputFileWide onClick={uploadCoursesHandler} tag={'courses'} />
+              <InputFileWide
+                onClick={uploadCoursesHandler}
+                tag={'courses'}
+                pending={uploadDataStates.pendingCourses}
+              />
             </div>
           </div>
         </MainContainer>

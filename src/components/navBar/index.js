@@ -80,7 +80,7 @@ const NavBar = React.memo(({ title }) => {
             )}
             {role === 'SUPERADMIN' && role !== 'NOT' && (
               <NavLink
-                to='/settings/updateAccountInfo'
+                to='/management/resetSystem'
                 className={({ isActive, isPending }) =>
                   isPending ? 'pending' : isActive ? styles['active-tab'] : ''
                 }

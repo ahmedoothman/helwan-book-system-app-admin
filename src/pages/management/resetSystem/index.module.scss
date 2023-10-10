@@ -1,0 +1,64 @@
+@import '../../../sass/main.scss';
+
+.container {
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+.reset-btn {
+  background-color: $color-main-danger;
+  color: $color-main-light-3;
+  width: 20rem;
+  height: 5rem;
+  border: none;
+  border-radius: 1rem;
+  font-family: $main-font;
+  cursor: pointer;
+  margin: 0 auto;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background-color: $color-main-danger-light;
+  }
+}
+.confirm-input {
+  display: flex;
+  flex-direction: column;
+  margin: 3rem auto;
+  justify-content: center;
+  align-items: center;
+}
+.btns-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.btn {
+  background-color: $color-main-dark;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  width: 6rem;
+  height: 3rem;
+  font-size: 1.2rem;
+  font-family: $main-font;
+  margin-left: 1rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+  &:last-child {
+    margin-left: 0rem;
+  }
+}
+.danger {
+  background-color: $color-main-danger;
+  border: 0.1rem solid $color-main-danger;
+  &:hover {
+    border: 0.1rem solid $color-main-danger;
+    background-color: $color-main-danger-light;
+  }
+}

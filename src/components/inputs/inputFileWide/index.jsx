@@ -2,6 +2,8 @@
 import React, { Fragment, useEffect, useState } from 'react';
 // styles
 import styles from './index.module.scss';
+// mui progress
+import CircularProgress from '@mui/material/CircularProgress';
 // components
 import { BtnSmall } from '../../btns/btnSmall';
 /***************************************************************************/
@@ -50,7 +52,20 @@ const InputFileWide = React.memo((props) => {
               : 'لم يتم اختيار ملف'}
           </p>
         </div>
-        <BtnSmall title={'رفع'} />
+        {!props.pending && <BtnSmall title={'رفع'} />}
+        {props.pending && (
+          <div className={styles['progress-container']}>
+            <BtnSmall
+              title={
+                <CircularProgress
+                  size={20}
+                  color='inherit'
+                  style={{ color: '#fff' }}
+                />
+              }
+            />
+          </div>
+        )}
       </form>
     </Fragment>
   );

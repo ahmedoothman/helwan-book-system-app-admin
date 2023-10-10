@@ -4,3 +4,37 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+.form-control-special select {
+  background-color: #fff;
+  border-radius: 0.7rem;
+  width: 15rem;
+  height: 3.8rem;
+  padding: 0.5rem;
+  border: 0.1rem solid $color-main-light;
+  margin: 0;
+  margin-left: 0.5rem;
+  font-family: $main-font;
+  font-size: 1.3rem;
+
+  cursor: pointer;
+}
+.search-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 4rem;
+  background-color: $color-main-light-3;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+}
+.part {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  &:first-child {
+    width: 46rem;
+  }
+}

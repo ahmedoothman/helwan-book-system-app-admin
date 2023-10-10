@@ -116,9 +116,8 @@ export const getMe = async () => {
 /* Name: getAllBooks */
 /* Description: getAllBooks */
 /**********************************************/
-export const getAllBooksService = async () => {
+export const getAllBooksService = async (data) => {
   const token = Cookies.get('token');
-  const data = {};
   try {
     const response = await axios.post(`${api_url}/api/v1/material/book`, data, {
       headers: {
@@ -244,6 +243,46 @@ export const uploadCoursesService = async (data) => {
       return {
         status: 'error',
         statusCode: error.code,
+        message: 'خطأ في الاتصال بالخادم',
+      };
+    } else if (error.response.data.message) {
+      return {
+        status: 'error',
+        message: error.response.data.message,
+      };
+    } else {
+      return {
+        status: 'error',
+        message: 'حدث خطأ ما',
+      };
+    }
+  }
+};
+/**********************************************/
+/* Name: resetSystemServices */
+/* Description: resetSystemServices */
+/**********************************************/
+export const resetSystemServices = async (data) => {
+  const token = Cookies.get('token');
+
+  try {
+    const response = await axios.post(
+      `${api_url}/api/v1/admin/resetSystem`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return {
+      status: 'success',
+      message: response.data.message,
+    };
+  } catch (error) {
+    if (error.code === 'ERR_NETWORK') {
+      return {
+        status: 'error',
         message: 'خطأ في الاتصال بالخادم',
       };
     } else if (error.response.data.message) {

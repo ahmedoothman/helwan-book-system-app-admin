@@ -8,3 +8,45 @@
   width: 100%;
   height: 70vh;
 }
+.form-control-special select {
+  font-size: 1.5rem;
+  background-color: #fff;
+  border-radius: 0.7rem;
+  width: 15rem;
+  height: 3.8rem;
+  padding: 0.5rem;
+  border: 0.1rem solid $color-main-light;
+  margin: 0;
+  margin-left: 0.5rem;
+
+  cursor: pointer;
+}
+.search-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 4rem;
+  width: 45rem;
+}
+.nav-search {
+  margin: 0 auto;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $color-main-light-3;
+  border-radius: 0.7rem;
+  // border-bottom: 0.1rem solid $color-main-dark;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+}
+.search-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 4rem;
+  width: 45rem;
+}

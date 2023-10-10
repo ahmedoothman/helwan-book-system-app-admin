@@ -10,7 +10,7 @@ let api_url = store.getState().ui.api_url;
 export const getAllAdminsService = async () => {
   const token = Cookies.get('token');
   try {
-    const response = await axios.get(`${api_url}/api/v1/users/getAllAdmins`, {
+    const response = await axios.get(`${api_url}/api/v1/admin/getAllAdmins`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -40,7 +40,7 @@ export const addAdminService = async (data) => {
   const token = Cookies.get('token');
   try {
     const response = await axios.post(
-      `${api_url}/api/v1/users/addAdmin`,
+      `${api_url}/api/v1/admin/addAdmin`,
       data,
       {
         headers: {
@@ -48,7 +48,11 @@ export const addAdminService = async (data) => {
         },
       }
     );
-    return { status: 'success', data: response.data };
+    return {
+      status: 'success',
+      data: response.data.data,
+      user: response.data.admin,
+    };
   } catch (error) {
     if (error.code === 'ERR_NETWORK') {
       return {
@@ -72,7 +76,7 @@ export const deleteAdminService = async (id) => {
   const token = Cookies.get('token');
   try {
     const response = await axios.delete(
-      `${api_url}/api/v1/users/deleteAdmin/${id}`,
+      `${api_url}/api/v1/admin/deleteAdmin/${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -107,7 +111,7 @@ export const editAdminService = async (id, data) => {
   };
   try {
     const response = await axios.patch(
-      `${api_url}/api/v1/users/updateAdmin`,
+      `${api_url}/api/v1/admin/updateAdmin`,
       body,
       {
         headers: {
@@ -142,7 +146,7 @@ export const resetPasswordService = async (id) => {
   };
   try {
     const response = await axios.patch(
-      `${api_url}/api/v1/users/resetAdminPassword`,
+      `${api_url}/api/v1/admin/resetAdminPassword`,
       body,
       {
         headers: {
@@ -178,7 +182,7 @@ export const getAdminService = async (userName, phoneNumber) => {
   };
   try {
     const response = await axios.post(
-      `${api_url}/api/v1/users/getAdmin`,
+      `${api_url}/api/v1/admin/getAdmin`,
       body,
       {
         headers: {
@@ -187,6 +191,34 @@ export const getAdminService = async (userName, phoneNumber) => {
       }
     );
     return { status: 'success', data: response.data.data.user };
+  } catch (error) {
+    if (error.code === 'ERR_NETWORK') {
+      return {
+        status: 'error',
+        statusCode: error.code,
+        message: 'خطأ في الاتصال بالخادم',
+      };
+    } else {
+      return {
+        status: 'error',
+        message: error.response.data.message,
+      };
+    }
+  }
+};
+/***************************************************************************/
+/* Name : get faculties service */
+/* Description : get faculties service */
+/***************************************************************************/
+export const getFacultiesService = async () => {
+  const token = Cookies.get('token');
+  try {
+    const response = await axios.get(`${api_url}/api/v1/college`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return { status: 'success', data: response.data.data };
   } catch (error) {
     if (error.code === 'ERR_NETWORK') {
       return {

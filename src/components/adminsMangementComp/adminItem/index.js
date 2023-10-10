@@ -28,6 +28,8 @@ const AdminItem = React.memo((props) => {
     (async () => {
       if (props.adminData.role === `SUPERADMIN`) {
         setStyle(`admin-item-supa`);
+      } else if (props.adminData.role === `PUBLISHER`) {
+        setStyle(`admin-item-publish`);
       } else {
         setStyle(`admin-item`);
       }
@@ -53,7 +55,13 @@ const AdminItem = React.memo((props) => {
         <div className={styles[`${style}__sep`]}></div>
         <div className={styles[`${style}__info`]}>
           <span>الدور</span>
-          <span>{props.adminData.role}</span>
+          <span>
+            {props.adminData.role === 'PUBLISHER'
+              ? 'هيئة النشر'
+              : props.adminData.role === 'ADMIN'
+              ? 'مسؤول كلية'
+              : props.adminData.role}
+          </span>
         </div>
         <div className={styles[`${style}__sep`]}></div>
         <div className={styles[`${style}__info`]}>

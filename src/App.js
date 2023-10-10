@@ -22,6 +22,9 @@ const AdminsManagementPage = React.lazy(() =>
 const UploadDataPage = React.lazy(() =>
   import('./pages/management/uploadDataPage/index')
 );
+const ResetSystem = React.lazy(() =>
+  import('./pages/management/resetSystem/index')
+);
 // settings pages
 const SettingsMain = React.lazy(() => import('./pages/settings/index'));
 const ChangePassword = React.lazy(() =>
@@ -50,6 +53,7 @@ function App() {
             <Route path='books' element={<BooksPage />} />
             <Route path='adminsManagement' element={<AdminsManagementPage />} />
             <Route path='uploadData' element={<UploadDataPage />} />
+            <Route path='resetSystem' element={<ResetSystem />} />
             <Route
               path='*'
               element={

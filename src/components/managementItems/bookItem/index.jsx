@@ -168,7 +168,8 @@ const BookItem = React.memo(
                 موافقة
               </button>
             )}
-            {role !== 'SUPERADMIN' && (
+
+            {role !== 'SUPERADMIN' && book.status !== 'rejected' && (
               <button
                 className={` ${styles['reject-btn']}`}
                 onClick={() => {

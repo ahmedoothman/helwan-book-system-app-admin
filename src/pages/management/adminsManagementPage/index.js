@@ -34,9 +34,11 @@ import {
   editAdminService,
   resetPasswordService,
   getAdminService,
+  getFacultiesService,
 } from '../../../services/adminsManagementService';
 // get role
-import { getRoleService } from '../../../services/userService';
+import { getRoleService } from '../../../services/adminService';
+
 // imgs
 import SearchIcon from '../../../assets/icons/search.svg';
 import CopyIcon from '../../../assets/icons/copy.svg';
@@ -45,7 +47,7 @@ import CopyIcon from '../../../assets/icons/copy.svg';
 /***************************************************************************/
 const AdminsManagementPage = React.memo(() => {
   // role
-  const [role, setRole] = useState('SUPERADMIN'); // NOT ADMIN PUBLISHER SUPERADMIN
+  const [role, setRole] = useState('NOT'); // NOT ADMIN PUBLISHER SUPERADMIN
   // form open state
   const [formOpen, setFormOpen] = useState(false);
   // confirm delete state
@@ -83,7 +85,6 @@ const AdminsManagementPage = React.memo(() => {
   ]);
   // refs
   const nameRef = useRef(null);
-  const nationalID = useRef(null);
   const userNameRef = useRef(null);
   const phoneRef = useRef(null);
   const searchRef = useRef(null);
@@ -109,16 +110,32 @@ const AdminsManagementPage = React.memo(() => {
   useEffect(() => {
     (async () => {
       // get role
-      /*       const { role } = await getRoleService();
+      const { role } = await getRoleService();
       if (role === 'SUPERADMIN') {
-        // get faculties
-        await getFacultiesHandler();
         // get admins
         await getAdminsHandler();
+        // get faculties
+        await getFacultiesHandler();
       }
-      setRole(role); */
+      setRole(role);
     })();
   }, []);
+  /*********************************************************************/
+  /* getFacultiesHandler */
+  /*********************************************************************/
+  const getFacultiesHandler = async () => {
+    const response = await getFacultiesService();
+    if (response.status === 'success') {
+      setFacultiesData(response.data);
+    } else {
+      //dispacth errors
+      dispatchDashboardStates({
+        type: 'ERROR',
+        errorMessage: response.message,
+      });
+    }
+  };
+  // ////////////////////
   // set Form New Open
   const setFormNewOpen = () => {
     // set form type
@@ -126,7 +143,6 @@ const AdminsManagementPage = React.memo(() => {
     // clear refs
     userNameRef.current.clearInput();
     phoneRef.current.clearInput();
-    nationalID.current.clearInput();
     nameRef.current.clearInput();
     // set faculty to default
     setFacultySelected('اختر الكلية');
@@ -139,7 +155,6 @@ const AdminsManagementPage = React.memo(() => {
     // clear refs
     userNameRef.current.clearInput();
     phoneRef.current.clearInput();
-    nationalID.current.clearInput();
     nameRef.current.clearInput();
     // set faculty to default
     setFacultySelected('اختر الكلية');
@@ -154,7 +169,6 @@ const AdminsManagementPage = React.memo(() => {
     // set refs
     userNameRef.current.setInputValue(adminData.userName);
     phoneRef.current.setInputValue(adminData.phoneNumber);
-    nationalID.current.setInputValue(adminData.nationalID);
     nameRef.current.setInputValue(adminData.name);
 
     // set form open
@@ -208,29 +222,6 @@ const AdminsManagementPage = React.memo(() => {
     } else {
       nameRef.current.clearError();
     }
-    if (data.nationalID.trim() === '') {
-      nationalID.current.activeError();
-      // dispatch states
-      dispatchDashboardStates({
-        type: 'ERROR',
-        errorMessage: 'يجب ادخال الرقم القومي',
-      });
-      return false;
-    } else {
-      nationalID.current.clearError();
-    }
-    // check national id 14 digit
-    if (data.nationalID.trim().length !== 14) {
-      nationalID.current.activeError();
-      // dispatch states
-      dispatchDashboardStates({
-        type: 'ERROR',
-        errorMessage: 'الرقم القومي يجب ان يكون 14 رقم',
-      });
-      return false;
-    } else {
-      nationalID.current.clearError();
-    }
 
     if (data.userName.trim() === '') {
       userNameRef.current.activeError();
@@ -266,9 +257,10 @@ const AdminsManagementPage = React.memo(() => {
     } else {
       phoneRef.current.clearError();
     }
+
     // check faculty
-    if (facultySelected === 'اختر الكلية') {
-      // dispatch states
+    if (rolesSelected === 'ADMIN' && facultySelected === 'اختر الكلية') {
+      //rolesSelected === 'ADMIN'& dispatch states
       dispatchDashboardStates({
         type: 'ERROR',
         errorMessage: 'يجب اختيار الكلية',
@@ -277,6 +269,7 @@ const AdminsManagementPage = React.memo(() => {
     }
     return true;
   };
+
   /******************************************************************/
   /* add admin */
   /******************************************************************/
@@ -286,10 +279,10 @@ const AdminsManagementPage = React.memo(() => {
     // get data
     const data = {
       name: nameRef.current.getInputValue(),
-      nationalID: nationalID.current.getInputValue(),
       userName: userNameRef.current.getInputValue(),
       phoneNumber: phoneRef.current.getInputValue(),
-      faculty: facultySelected,
+      faculty: rolesSelected == 'ADMIN' ? facultySelected : undefined,
+      role: rolesSelected,
     };
     // vaiidate data
     const isValid = validateInput(data);
@@ -302,9 +295,9 @@ const AdminsManagementPage = React.memo(() => {
           successMessage: 'تم اضافة مسؤول بنجاح',
         });
         // add admin to admins data
-        setAdminsData((prev) => [...prev, response.data.user]);
+        setAdminsData((prev) => [...prev, response.user]);
         // set admin login info
-        setAdminLoginInfo(response.data.data);
+        setAdminLoginInfo(response.data);
         setShowLoginInfo(true);
       } else {
         // dispatch error
@@ -352,10 +345,10 @@ const AdminsManagementPage = React.memo(() => {
     // get data
     const data = {
       name: nameRef.current.getInputValue(),
-      nationalID: nationalID.current.getInputValue(),
       userName: userNameRef.current.getInputValue(),
       phoneNumber: phoneRef.current.getInputValue(),
-      faculty: facultySelected,
+      faculty: rolesSelected == 'ADMIN' ? facultySelected : undefined,
+      role: rolesSelected,
     };
     // vaiidate data
     const isValid = validateInput(data);
@@ -522,9 +515,6 @@ const AdminsManagementPage = React.memo(() => {
           <div className={styles['nav-input']}>
             <div className={styles['form-control']}>
               <Input title={'الاسم'} type='text' ref={nameRef} />
-            </div>
-            <div className={styles['form-control']}>
-              <Input title={'الرقم القومي'} type='text' ref={nationalID} />
             </div>
             <div className={styles['form-control']}>
               <Input title={'اسم المستخدم'} type='text' ref={userNameRef} />

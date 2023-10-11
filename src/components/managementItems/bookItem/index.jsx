@@ -113,33 +113,33 @@ const BookItem = React.memo(
             <div className={styles['book-status-super']}>
               {book.publisherStatus === 'accepted' &&
                 book.adminStatus === 'accepted' && <p>🟢 تم قبول الكتاب </p>}
+              {book.publisherStatus === 'pending' &&
+                book.adminStatus === 'pending' && <p>🟡 جاري مراجعة الكتاب </p>}
+              {book.publisherStatus === 'rejected' &&
+                book.adminStatus === 'rejected' && (
+                  <p>🔴تم رفض الكتاب من هيئة النشر و مسؤول الكلية</p>
+                )}
               {book.publisherStatus === 'accepted' &&
                 book.adminStatus !== 'accepted' && (
                   <p>🟢 تم قبول الكتاب من هيئة النشر </p>
+                )}
+              {book.publisherStatus === 'pending' &&
+                book.adminStatus !== 'pending' && (
+                  <p>🟡 جاري مراجعة الكتاب من هيئة النشر </p>
+                )}
+              {book.publisherStatus === 'rejected' &&
+                book.adminStatus !== 'rejected' && (
+                  <p> 🔴تم رفض الكتاب من هيئة النشر</p>
                 )}
               {book.publisherStatus !== 'accepted' &&
                 book.adminStatus === 'accepted' && (
                   <p>🟢 تم قبول الكتاب من مسؤول الكلية </p>
                 )}
-              {book.publisherStatus === 'pending' &&
-                book.adminStatus === 'pending' && <p>🟡 جاري مراجعة الكتاب </p>}
-              {book.publisherStatus === 'pending' &&
-                book.adminStatus !== 'pending' && (
-                  <p>🟡 جاري مراجعة الكتاب من هيئة النشر </p>
-                )}
               {book.publisherStatus !== 'pending' &&
                 book.adminStatus === 'pending' && (
                   <p>🟡جاري مراجعة الكتاب من مسؤول الكلية </p>
                 )}
-              {book.publisherStatus === 'rejected' &&
-                book.adminStatus === 'rejected' && (
-                  <p>🔴تم رفض الكتاب من هيئة النشر و مسؤول الكلية</p>
-                )}
 
-              {book.publisherStatus === 'rejected' &&
-                book.adminStatus !== 'rejected' && (
-                  <p> 🔴تم رفض الكتاب من هيئة النشر</p>
-                )}
               {book.publisherStatus !== 'rejected' &&
                 book.adminStatus === 'rejected' && (
                   <p>🔴تم رفض الكتاب من مسؤول الكلية</p>

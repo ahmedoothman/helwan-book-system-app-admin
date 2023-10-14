@@ -116,17 +116,22 @@ export const getMe = async () => {
 /* Name: getAllBooks */
 /* Description: getAllBooks */
 /**********************************************/
-export const getAllBooksService = async (data) => {
+export const getAllBooksService = async (data, page, limit) => {
   const token = Cookies.get('token');
   try {
-    const response = await axios.post(`${api_url}/api/v1/material/book`, data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.post(
+      `${api_url}/api/v1/material/book?page=${page}&limit=${limit}`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return {
       status: 'success',
       books: response.data.data.materials,
+      length: response.data.length,
     };
   } catch (error) {
     if (error.code === 'ERR_NETWORK') {
@@ -382,11 +387,11 @@ export const resetSystemMaterialsServices = async (data) => {
 /* Name: getAllDoctorsServices */
 /* Description: getAllDoctorsServices */
 /**********************************************/
-export const getAllDoctorsServices = async (data) => {
+export const getAllDoctorsServices = async (data, page, limit) => {
   const token = Cookies.get('token');
   try {
     const response = await axios.post(
-      `${api_url}/api/v1/doctor/getDoctors`,
+      `${api_url}/api/v1/doctor/getDoctors?page=${page}&limit=${limit}`,
       data,
       {
         headers: {
@@ -423,14 +428,19 @@ export const getAllDoctorsServices = async (data) => {
 /* Name: getAllCoursesServices */
 /* Description: getAllCoursesServices */
 /**********************************************/
-export const getAllCoursesServices = async (data) => {
+export const getAllCoursesServices = async (data, page, limit) => {
   const token = Cookies.get('token');
+  console.log('-->', page, limit);
   try {
-    const response = await axios.post(`${api_url}/api/v1/course`, data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.post(
+      `${api_url}/api/v1/course?page=${page}&limit=${limit}`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return {
       status: 'success',
       courses: response.data.data.courses,

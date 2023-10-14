@@ -173,3 +173,17 @@
     }
   }
 }
+// pagination
+.pagination-container {
+  background-color: $color-main-light-3;
+  display: flex;
+  width: 45rem;
+  margin: 1rem auto;
+  margin-bottom: 1.5rem;
+  border-radius: 0.7rem;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+  padding: 0.2rem;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}

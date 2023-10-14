@@ -26,6 +26,8 @@ import {
 // MUI
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 // router
 import { useNavigate } from 'react-router-dom';
 // redux
@@ -61,11 +63,15 @@ const CoursesPage = React.memo(() => {
   const [dataLength, setDataLength] = useState(0);
   // states
   const [courses, setCourses] = useState([]);
+  // pagination
+  const [pageSelected, setPageSelected] = useState(1);
+  const [numberOfPages, setNumberOfPages] = useState(1);
+  const [limit, setLimit] = useState(50);
   // search type states
   const [searchType, setSearchType] = useState('اختر نوع البحث');
   const [searchTypeData, setSearchTypeData] = useState([
     { value: 1, title: 'اسم المقرر' },
-    { value: 2, title: 'كود القومي' },
+    { value: 2, title: 'كود المقرر' },
   ]);
   const searchRef = useRef(null);
 
@@ -77,7 +83,7 @@ const CoursesPage = React.memo(() => {
       const { role } = await getRoleService();
       setRole(role);
       // get all courses
-      await getAllCoursesHandler({});
+      await getAllCoursesHandler({}, pageSelected);
       // get faculties
       await getFacultiesHandler();
     })();
@@ -112,12 +118,15 @@ const CoursesPage = React.memo(() => {
   /******************************************************************/
   /* getAllCoursesHandler */
   /******************************************************************/
-  const getAllCoursesHandler = async (data) => {
+  const getAllCoursesHandler = async (data, page) => {
     dispatchCoursesPageStates({ type: 'PENDING' });
-    const response = await getAllCoursesServices(data);
+    const response = await getAllCoursesServices(data, page, limit);
     if (response.status === 'success') {
       setCourses(response.courses);
       setDataLength(response.total);
+      // calculate number of pages
+      const numberOfPages = Math.ceil(response.total / limit);
+      setNumberOfPages(numberOfPages);
       dispatchCoursesPageStates({ type: 'CLEAR' });
     } else {
       dispatchCoursesPageStates({
@@ -128,11 +137,12 @@ const CoursesPage = React.memo(() => {
   };
 
   /******************************************************************/
-  /* searchForcoursesHandler */
+  /* searchForCoursesHandler */
   /******************************************************************/
-  const searchForcoursesHandler = async (
+  const searchForCoursesHandler = async (
     faculty = undefined,
-    skipValidation
+    skipValidation = false,
+    page = 1
   ) => {
     if (!skipValidation && searchType === 'اختر نوع البحث') {
       dispatchCoursesPageStates({
@@ -165,12 +175,12 @@ const CoursesPage = React.memo(() => {
       };
     }
 
-    await getAllCoursesHandler(data);
+    await getAllCoursesHandler(data, page);
   };
   /******************************************************************/
-  /* deleteDoctorHandler */
+  /* deleteCoursesHandler */
   /******************************************************************/
-  const deleteDoctorHandler = async () => {
+  const deleteCoursesHandler = async () => {
     dispatchCoursesPageStates({ type: 'PENDING' });
     const response = await deleteCourseServices(deletedItem.id);
     if (response.status === 'success') {
@@ -192,6 +202,13 @@ const CoursesPage = React.memo(() => {
         errorMessage: response.message,
       });
     }
+  };
+  /******************************************************************/
+  /* pagination handler */
+  /******************************************************************/
+  const paginationHandler = async (e, page) => {
+    setPageSelected(page);
+    await searchForCoursesHandler(facultySelected, true, page);
   };
   return (
     <Fragment>
@@ -226,7 +243,13 @@ const CoursesPage = React.memo(() => {
               >
                 الكل
               </Input>
-              <BtnSmall icon={SearchIcon} onClick={searchForcoursesHandler} />
+              <BtnSmall
+                icon={SearchIcon}
+                onClick={() => {
+                  setPageSelected(1);
+                  searchForCoursesHandler(facultySelected, false, 1);
+                }}
+              />
             </div>
             <div className={styles['part']}>
               <div className={styles['form-control']}>
@@ -237,7 +260,8 @@ const CoursesPage = React.memo(() => {
                   value={facultySelected}
                   onChange={(e) => {
                     setFacultySelected(e.target.value);
-                    searchForcoursesHandler(e.target.value, true);
+                    setPageSelected(1);
+                    searchForCoursesHandler(e.target.value, true, 1);
                   }}
                 >
                   <option value={'الكل'}>الكل</option>
@@ -258,6 +282,21 @@ const CoursesPage = React.memo(() => {
               <p>{dataLength}</p>
             </div>
           </div>
+          <br />
+          {courses.length > 0 && (
+            <div className={styles['pagination-container']}>
+              <Stack spacing={2}>
+                <Pagination
+                  count={+numberOfPages}
+                  page={pageSelected}
+                  color='primary'
+                  size='large'
+                  dir='ltr'
+                  onChange={paginationHandler}
+                />
+              </Stack>
+            </div>
+          )}
           {!componentStates.pending && (
             <div className={styles['courses-list']}>
               {courses.map((doctor) => {
@@ -274,9 +313,26 @@ const CoursesPage = React.memo(() => {
               })}
             </div>
           )}
+
+          <div className={styles['pagination-container']}>
+            {courses.length > 0 && (
+              <div className={styles['pagination-container']}>
+                <Stack spacing={2}>
+                  <Pagination
+                    count={+numberOfPages}
+                    page={pageSelected}
+                    color='primary'
+                    size='large'
+                    dir='ltr'
+                    onChange={paginationHandler}
+                  />
+                </Stack>
+              </div>
+            )}
+          </div>
           <div className={styles['message-container']}>
             {courses.length === 0 && (
-              <Message text={'لا يوجد كتب'} type='info' />
+              <Message text={'لا يوجد مقررات'} type='info' />
             )}
             {componentStates.pending && (
               <Message text={'يتم تحميل الكتب'} type='load' />
@@ -299,7 +355,7 @@ const CoursesPage = React.memo(() => {
               لا
             </button>
             <button
-              onClick={deleteDoctorHandler}
+              onClick={deleteCoursesHandler}
               className={`${styles['btn']} ${styles['danger']}`}
             >
               نعم

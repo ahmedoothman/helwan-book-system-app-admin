@@ -25,10 +25,13 @@ import {
 // MUI
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 // router
 import { useNavigate } from 'react-router-dom';
 // redux
 import { useDispatch } from 'react-redux';
+
 // services
 import {
   getRoleService,
@@ -52,6 +55,10 @@ const BooksPage = React.memo(() => {
   const [role, setRole] = useState('NOT');
   // states
   const [books, setBooks] = useState([]);
+  // pagination
+  const [pageSelected, setPageSelected] = useState(1);
+  const [numberOfPages, setNumberOfPages] = useState(1);
+  const [limit, setLimit] = useState(50);
   // search type states
   const [searchType, setSearchType] = useState('اختر نوع البحث');
   const [searchTypeData, setSearchTypeData] = useState([
@@ -61,7 +68,7 @@ const BooksPage = React.memo(() => {
     { value: 4, title: 'اسم الدكتور' },
     { value: 5, title: 'الرقم القومي للدكتور ' },
   ]);
-  const [searchTypeData2, setSearchTypeData2] = useState(undefined);
+  const [searchTypeData2, setSearchTypeData2] = useState('all');
   const [filterationData, setFilterationData] = useState([
     { value: 'all', title: 'الكل' },
     { value: 'accepted', title: 'تمت الموافقة' },
@@ -80,8 +87,9 @@ const BooksPage = React.memo(() => {
     (async () => {
       const { role } = await getRoleService();
       setRole(role);
+      // calculate number of pages
       // get all books
-      await getAllBookHandler({});
+      await getAllBookHandler({}, pageSelected);
     })();
   }, []);
   /******************************************************************/
@@ -93,11 +101,15 @@ const BooksPage = React.memo(() => {
   /******************************************************************/
   /* getAllBookHandler */
   /******************************************************************/
-  const getAllBookHandler = async (data) => {
+  const getAllBookHandler = async (data, page) => {
     dispatchBooksPageStates({ type: 'PENDING' });
-    const response = await getAllBooksService(data);
+    const response = await getAllBooksService(data, page, limit);
     if (response.status === 'success') {
       setBooks(response.books);
+      // calculate number of pages
+      const numberOfPages = Math.ceil(response.length / limit);
+      setNumberOfPages(numberOfPages);
+      // dispatch clear
       dispatchBooksPageStates({ type: 'CLEAR' });
     } else {
       dispatchBooksPageStates({
@@ -110,7 +122,6 @@ const BooksPage = React.memo(() => {
   /* viewBookHandler */
   /******************************************************************/
   const viewBookHandler = (path) => {
-    console.log('view : ' + `${apiUrl}/${path}`);
     window.open(`${apiUrl}/${path}`, '_blank');
   };
   /******************************************************************/
@@ -156,7 +167,8 @@ const BooksPage = React.memo(() => {
   /******************************************************************/
   const searchForBooksHandler = async (
     status = undefined,
-    skipValidation = false
+    skipValidation = false,
+    page = 1
   ) => {
     if (!skipValidation && searchType === 'اختر نوع البحث') {
       dispatchBooksPageStates({
@@ -209,7 +221,15 @@ const BooksPage = React.memo(() => {
       };
     }
 
-    await getAllBookHandler(data);
+    await getAllBookHandler(data, page);
+  };
+
+  /******************************************************************/
+  /* pagination handler */
+  /******************************************************************/
+  const paginationHandler = async (e, page) => {
+    setPageSelected(page);
+    await searchForBooksHandler(setSearchTypeData2, true, page);
   };
   return (
     <Fragment>
@@ -243,7 +263,13 @@ const BooksPage = React.memo(() => {
             >
               اختر الكلية
             </Input>
-            <BtnSmall icon={SearchIcon} onClick={searchForBooksHandler} />
+            <BtnSmall
+              icon={SearchIcon}
+              onClick={() => {
+                setPageSelected(1);
+                searchForBooksHandler(searchTypeData2, false, 1);
+              }}
+            />
           </div>
           <div className={styles['part']}>
             {' '}
@@ -253,7 +279,9 @@ const BooksPage = React.memo(() => {
                 name='nationality'
                 value={searchTypeData2}
                 onChange={(e) => {
-                  searchForBooksHandler(e.target.value, true);
+                  setSearchTypeData2(e.target.value);
+                  setPageSelected(1);
+                  searchForBooksHandler(e.target.value, true, 1);
                 }}
               >
                 {filterationData.map((el) => (
@@ -266,8 +294,20 @@ const BooksPage = React.memo(() => {
           </div>
         </div>
         <br />
-        <br />
-
+        {books.length > 0 && (
+          <div className={styles['pagination-container']}>
+            <Stack spacing={2}>
+              <Pagination
+                count={+numberOfPages}
+                page={pageSelected}
+                color='primary'
+                size='large'
+                dir='ltr'
+                onChange={paginationHandler}
+              />
+            </Stack>
+          </div>
+        )}
         {!componentStates.pending && (
           <div className={styles['books-list']}>
             {books.map((book) => {
@@ -289,6 +329,20 @@ const BooksPage = React.memo(() => {
                 />
               );
             })}
+          </div>
+        )}
+        {books.length > 0 && (
+          <div className={styles['pagination-container']}>
+            <Stack spacing={2}>
+              <Pagination
+                count={+numberOfPages}
+                page={pageSelected}
+                color='primary'
+                size='large'
+                dir='ltr'
+                onChange={paginationHandler}
+              />
+            </Stack>
           </div>
         )}
         <div className={styles['message-container']}>

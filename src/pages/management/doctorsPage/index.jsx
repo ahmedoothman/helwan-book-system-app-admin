@@ -26,6 +26,8 @@ import {
 // MUI
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 // router
 import { useNavigate } from 'react-router-dom';
 // redux
@@ -54,6 +56,10 @@ const DoctorsPage = React.memo(() => {
   const [facultiesData, setFacultiesData] = useState([]);
   // role
   const [role, setRole] = useState('NOT');
+  // pagination
+  const [pageSelected, setPageSelected] = useState(1);
+  const [numberOfPages, setNumberOfPages] = useState(1);
+  const [limit, setLimit] = useState(50);
   // confirm delete form
   const [confirmDeleteForm, setConfirmDeleteForm] = useState(false);
   const [deletedItem, setDeletedItem] = useState({ name: 'temp', id: 'temp' });
@@ -78,7 +84,7 @@ const DoctorsPage = React.memo(() => {
       const { role } = await getRoleService();
       setRole(role);
       // get all doctors
-      await getAllDoctorsHandler({});
+      await getAllDoctorsHandler({}, pageSelected);
       // get faculties
       await getFacultiesHandler();
     })();
@@ -113,12 +119,15 @@ const DoctorsPage = React.memo(() => {
   /******************************************************************/
   /* getAllDoctorsHandler */
   /******************************************************************/
-  const getAllDoctorsHandler = async (data) => {
+  const getAllDoctorsHandler = async (data, page) => {
     dispatchDoctorsPageStates({ type: 'PENDING' });
-    const response = await getAllDoctorsServices(data);
+    const response = await getAllDoctorsServices(data, page, limit);
     if (response.status === 'success') {
       setDoctors(response.doctors);
       setDataLength(response.total);
+      // calculate number of pages
+      const numberOfPages = Math.ceil(response.total / limit);
+      setNumberOfPages(numberOfPages);
       dispatchDoctorsPageStates({ type: 'CLEAR' });
     } else {
       dispatchDoctorsPageStates({
@@ -133,7 +142,8 @@ const DoctorsPage = React.memo(() => {
   /******************************************************************/
   const searchForDoctorsHandler = async (
     faculty = undefined,
-    skipValidation
+    skipValidation = false,
+    page = 1
   ) => {
     if (!skipValidation && searchType === 'اختر نوع البحث') {
       dispatchDoctorsPageStates({
@@ -173,7 +183,7 @@ const DoctorsPage = React.memo(() => {
       };
     }
 
-    await getAllDoctorsHandler(data);
+    await getAllDoctorsHandler(data, page);
   };
   /******************************************************************/
   /* deleteDoctorHandler */
@@ -200,6 +210,13 @@ const DoctorsPage = React.memo(() => {
         errorMessage: response.message,
       });
     }
+  };
+  /******************************************************************/
+  /* pagination handler */
+  /******************************************************************/
+  const paginationHandler = async (e, page) => {
+    setPageSelected(page);
+    await searchForDoctorsHandler(facultySelected, true, page);
   };
   return (
     <Fragment>
@@ -234,7 +251,13 @@ const DoctorsPage = React.memo(() => {
               >
                 الكل
               </Input>
-              <BtnSmall icon={SearchIcon} onClick={searchForDoctorsHandler} />
+              <BtnSmall
+                icon={SearchIcon}
+                onClick={() => {
+                  setPageSelected(1);
+                  searchForDoctorsHandler(facultySelected, false, 1);
+                }}
+              />
             </div>
             <div className={styles['part']}>
               <div className={styles['form-control']}>
@@ -245,7 +268,8 @@ const DoctorsPage = React.memo(() => {
                   value={facultySelected}
                   onChange={(e) => {
                     setFacultySelected(e.target.value);
-                    searchForDoctorsHandler(e.target.value, true);
+                    setPageSelected(1);
+                    searchForDoctorsHandler(e.target.value, true, 1);
                   }}
                 >
                   <option value={'الكل'}>الكل</option>
@@ -266,6 +290,21 @@ const DoctorsPage = React.memo(() => {
               <p>{dataLength}</p>
             </div>
           </div>
+          <br></br>
+          {doctors.length > 0 && (
+            <div className={styles['pagination-container']}>
+              <Stack spacing={2}>
+                <Pagination
+                  count={+numberOfPages}
+                  page={pageSelected}
+                  color='primary'
+                  size='large'
+                  dir='ltr'
+                  onChange={paginationHandler}
+                />
+              </Stack>
+            </div>
+          )}
           {!componentStates.pending && (
             <div className={styles['doctors-list']}>
               {doctors.map((doctor) => {
@@ -282,9 +321,23 @@ const DoctorsPage = React.memo(() => {
               })}
             </div>
           )}
+          {doctors.length > 0 && (
+            <div className={styles['pagination-container']}>
+              <Stack spacing={2}>
+                <Pagination
+                  count={+numberOfPages}
+                  page={pageSelected}
+                  color='primary'
+                  size='large'
+                  dir='ltr'
+                  onChange={paginationHandler}
+                />
+              </Stack>
+            </div>
+          )}
           <div className={styles['message-container']}>
             {doctors.length === 0 && (
-              <Message text={'لا يوجد كتب'} type='info' />
+              <Message text={'لا يوجد دكاترة'} type='info' />
             )}
             {componentStates.pending && (
               <Message text={'يتم تحميل الكتب'} type='load' />

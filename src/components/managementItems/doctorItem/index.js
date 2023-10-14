@@ -43,7 +43,8 @@ const DoctorItem = React.memo((props) => {
 
           <div className={styles[`${style}__info`]}>
             <span className={styles[`title`]}>الايميل</span>
-            <span>{props.data.email}</span>
+            <span>{props.data.email.split('@')[0]}</span>
+            <span>{props.data.email.split('@')[1] + '@'}</span>
           </div>
           <div className={styles[`${style}__btns`]}>
             <DeleteBtn onPress={deleteHandler} />

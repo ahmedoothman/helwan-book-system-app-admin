@@ -21,8 +21,8 @@
   &__info {
     display: flex;
     flex-direction: column;
+
     padding: 1rem;
-    min-width: fit-content;
     width: 12rem;
     background-color: $color-main-light-2;
     border-radius: 1rem;
@@ -34,6 +34,8 @@
     }
     span {
       font-size: 1.5rem;
+      // make text wrap
+      word-wrap: break-word;
     }
 
     &__list {
@@ -47,7 +49,7 @@
       margin-bottom: 1rem;
       span {
         margin-bottom: 0.5rem;
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         background-color: $color-main-light-3;
         box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
         border-radius: 1rem;
@@ -57,7 +59,7 @@
         min-width: fit-content;
         width: 5rem;
         padding: 0.3rem;
-        margin-left: 0.2rem;
+        margin-left: 0.1rem;
         color: $color-main-dark;
       }
     }

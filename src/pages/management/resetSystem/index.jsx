@@ -154,134 +154,140 @@ const ResetSystem = React.memo(() => {
   return (
     <Fragment>
       <NavHeader title='اعادة التهيئة ' />
-      <MainContainer>
-        <br />
-        <br />
-        <div className={styles['reset-item']}>
-          <div className={styles['reset-item__title']}>مسح بيانات الدكاترة</div>
-          <div className={styles['reset-item__content']}>
-            <div className={styles['container']}>
-              <Note text='هذا الاجراء سيمسح  كل بيانات الدكاترة  ' />
-              <button
-                className={styles['reset-btn']}
-                onClick={() => {
-                  setConfirmDeleteForm(true);
-                  setDeleteMessage('مسح بيانات الدكاترة');
-                  setDeleteType('DOCTORS');
-                }}
-              >
-                اعادة تهيئة الدكاترة
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className={styles['reset-item']}>
-          <div className={styles['reset-item__title']}>مسح بيانات المحتوى</div>
-          <div className={styles['reset-item__content']}>
-            <div className={styles['container']}>
-              <Note text='هذا الاجراء سيمسح  كل بيانات المحتوى  ' />
-              <button
-                className={styles['reset-btn']}
-                onClick={() => {
-                  setConfirmDeleteForm(true);
-                  setDeleteMessage('مسح بيانات المحتوى');
-                  setDeleteType('MATERIALS');
-                }}
-              >
-                اعادة تهيئة المحتوى
-              </button>
-            </div>
-          </div>
-        </div>
-        {role === 'SUPERADMIN' && role !== 'NOT' && (
+      {role !== 'PUBLISHER' && role !== 'NOT' && (
+        <MainContainer>
+          <br />
+          <br />
           <div className={styles['reset-item']}>
             <div className={styles['reset-item__title']}>
-              مسح بيانات المقررات
+              مسح بيانات الدكاترة
             </div>
             <div className={styles['reset-item__content']}>
               <div className={styles['container']}>
-                <Note text='هذا الاجراء سيمسح  كل بيانات المقررات  ' />
+                <Note text='هذا الاجراء سيمسح  كل بيانات الدكاترة  ' />
                 <button
                   className={styles['reset-btn']}
                   onClick={() => {
                     setConfirmDeleteForm(true);
-                    setDeleteMessage('مسح بيانات المقررات');
-                    setDeleteType('COURSES');
+                    setDeleteMessage('مسح بيانات الدكاترة');
+                    setDeleteType('DOCTORS');
                   }}
                 >
-                  اعادة تهيئة المقررات
+                  اعادة تهيئة الدكاترة
                 </button>
               </div>
             </div>
           </div>
-        )}
-
-        {/* ********** open Confirmation Form  confirmDeleteForm ********** */}
-        <FormPopUp
-          open={confirmDeleteForm}
-          handleClose={handleCloseConfirmForm}
-        >
-          <div className={styles['confirm-input']}>
-            <h2>هل انت متأكد من {deleteMessage} ؟</h2>
-            <div className={styles['btns-group']}>
-              <button
-                onClick={handleCloseConfirmForm}
-                className={`${styles['btn']} ${styles['normal']}`}
-              >
-                لا
-              </button>
-              <button
-                onClick={() => {
-                  setConfirmDeleteForm(false);
-                  setPasswordConfirmForm(true);
-                }}
-                className={`${styles['btn']} ${styles['danger']}`}
-              >
-                نعم
-              </button>
+          <div className={styles['reset-item']}>
+            <div className={styles['reset-item__title']}>
+              مسح بيانات المحتوى
+            </div>
+            <div className={styles['reset-item__content']}>
+              <div className={styles['container']}>
+                <Note text='هذا الاجراء سيمسح  كل بيانات المحتوى  ' />
+                <button
+                  className={styles['reset-btn']}
+                  onClick={() => {
+                    setConfirmDeleteForm(true);
+                    setDeleteMessage('مسح بيانات المحتوى');
+                    setDeleteType('MATERIALS');
+                  }}
+                >
+                  اعادة تهيئة المحتوى
+                </button>
+              </div>
             </div>
           </div>
-        </FormPopUp>
-        <FormPopUp
-          open={passwordConfirmForm}
-          handleClose={() => {
-            setPasswordConfirmForm(false);
-          }}
-        >
-          <div className={styles['confirm-input']}>
-            <h2>برجاء ادخال كلمة السر للتأكيد</h2>
-            <Input title={'كلمة السر'} type='PASSWORD' ref={passwordRef} />
-            <br />
-            <div className={styles['input-group']}>
-              {!resetSystemStates.pending && (
-                <button
-                  onClick={() => {
-                    resetSystemHandler(deleteType);
-                  }}
-                  className={`${styles['btn']} ${styles['normal']}`}
-                >
-                  ادخل
-                </button>
-              )}
-              {resetSystemStates.pending && (
-                <button
-                  onClick={() => {
-                    resetSystemHandler(deleteType);
-                  }}
-                  className={`${styles['btn']} ${styles['normal']}`}
-                >
-                  <CircularProgress
-                    size={20}
-                    sx={{
-                      color: '#a18a00',
+          {role === 'SUPERADMIN' && role !== 'NOT' && (
+            <div className={styles['reset-item']}>
+              <div className={styles['reset-item__title']}>
+                مسح بيانات المقررات
+              </div>
+              <div className={styles['reset-item__content']}>
+                <div className={styles['container']}>
+                  <Note text='هذا الاجراء سيمسح  كل بيانات المقررات  ' />
+                  <button
+                    className={styles['reset-btn']}
+                    onClick={() => {
+                      setConfirmDeleteForm(true);
+                      setDeleteMessage('مسح بيانات المقررات');
+                      setDeleteType('COURSES');
                     }}
-                  />
-                </button>
-              )}
+                  >
+                    اعادة تهيئة المقررات
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </FormPopUp>
-      </MainContainer>
+          )}
+
+          {/* ********** open Confirmation Form  confirmDeleteForm ********** */}
+          <FormPopUp
+            open={confirmDeleteForm}
+            handleClose={handleCloseConfirmForm}
+          >
+            <div className={styles['confirm-input']}>
+              <h2>هل انت متأكد من {deleteMessage} ؟</h2>
+              <div className={styles['btns-group']}>
+                <button
+                  onClick={handleCloseConfirmForm}
+                  className={`${styles['btn']} ${styles['normal']}`}
+                >
+                  لا
+                </button>
+                <button
+                  onClick={() => {
+                    setConfirmDeleteForm(false);
+                    setPasswordConfirmForm(true);
+                  }}
+                  className={`${styles['btn']} ${styles['danger']}`}
+                >
+                  نعم
+                </button>
+              </div>
+            </div>
+          </FormPopUp>
+          <FormPopUp
+            open={passwordConfirmForm}
+            handleClose={() => {
+              setPasswordConfirmForm(false);
+            }}
+          >
+            <div className={styles['confirm-input']}>
+              <h2>برجاء ادخال كلمة السر للتأكيد</h2>
+              <Input title={'كلمة السر'} type='PASSWORD' ref={passwordRef} />
+              <br />
+              <div className={styles['input-group']}>
+                {!resetSystemStates.pending && (
+                  <button
+                    onClick={() => {
+                      resetSystemHandler(deleteType);
+                    }}
+                    className={`${styles['btn']} ${styles['normal']}`}
+                  >
+                    ادخل
+                  </button>
+                )}
+                {resetSystemStates.pending && (
+                  <button
+                    onClick={() => {
+                      resetSystemHandler(deleteType);
+                    }}
+                    className={`${styles['btn']} ${styles['normal']}`}
+                  >
+                    <CircularProgress
+                      size={20}
+                      sx={{
+                        color: '#a18a00',
+                      }}
+                    />
+                  </button>
+                )}
+              </div>
+            </div>
+          </FormPopUp>
+        </MainContainer>
+      )}
 
       {role !== 'SUPERADMIN' && role !== 'ADMIN' && role !== 'NOT' && (
         <Message text={'لا يمكنك الوصول لهذه الصفحة'} type='error' />

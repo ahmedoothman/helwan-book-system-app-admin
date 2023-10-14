@@ -132,57 +132,59 @@ const UploadData = React.memo(() => {
     <Fragment>
       <NavHeader title='رفع البيانات' />
 
-      <MainContainer>
-        <br />
-        <br />
-        <div className={styles['upload-item']}>
-          <div className={styles['upload-item__title']}>
-            رفع بيانات الدكاترة
-          </div>
-          <div className={styles['upload-item__content']}>
-            {role === 'SUPERADMIN' && role !== 'NOT' && (
-              <div className={styles['form-control']}>
-                <h3>الكلية</h3>
-                <select
-                  id='faculty'
-                  name='faculty'
-                  value={facultySelected}
-                  onChange={(e) => {
-                    setFacultySelected(e.target.value);
-                  }}
-                >
-                  <option value={'اختر الكلية'}>اختر الكلية</option>
-                  {facultiesData.map((el) => (
-                    <option value={el} key={el}>
-                      {el}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-            <InputFileWide
-              onClick={uploadDoctorsDataHandler}
-              tag={'doctors'}
-              pending={uploadDataStates.pendingDoctors}
-            />
-          </div>
-        </div>
-        <br />
-        {role === 'SUPERADMIN' && role !== 'NOT' && (
+      {role !== 'PUBLISHER' && role !== 'NOT' && (
+        <MainContainer>
+          <br />
+          <br />
           <div className={styles['upload-item']}>
             <div className={styles['upload-item__title']}>
-              رفع بيانات المقررات
+              رفع بيانات الدكاترة
             </div>
             <div className={styles['upload-item__content']}>
+              {role === 'SUPERADMIN' && role !== 'NOT' && (
+                <div className={styles['form-control']}>
+                  <h3>الكلية</h3>
+                  <select
+                    id='faculty'
+                    name='faculty'
+                    value={facultySelected}
+                    onChange={(e) => {
+                      setFacultySelected(e.target.value);
+                    }}
+                  >
+                    <option value={'اختر الكلية'}>اختر الكلية</option>
+                    {facultiesData.map((el) => (
+                      <option value={el} key={el}>
+                        {el}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
               <InputFileWide
-                onClick={uploadCoursesHandler}
-                tag={'courses'}
-                pending={uploadDataStates.pendingCourses}
+                onClick={uploadDoctorsDataHandler}
+                tag={'doctors'}
+                pending={uploadDataStates.pendingDoctors}
               />
             </div>
           </div>
-        )}
-      </MainContainer>
+          <br />
+          {role === 'SUPERADMIN' && role !== 'NOT' && (
+            <div className={styles['upload-item']}>
+              <div className={styles['upload-item__title']}>
+                رفع بيانات المقررات
+              </div>
+              <div className={styles['upload-item__content']}>
+                <InputFileWide
+                  onClick={uploadCoursesHandler}
+                  tag={'courses'}
+                  pending={uploadDataStates.pendingCourses}
+                />
+              </div>
+            </div>
+          )}
+        </MainContainer>
+      )}
       {role !== 'SUPERADMIN' && role !== 'ADMIN' && role !== 'NOT' && (
         <Message text={'لا يمكنك الوصول لهذه الصفحة'} type='error' />
       )}

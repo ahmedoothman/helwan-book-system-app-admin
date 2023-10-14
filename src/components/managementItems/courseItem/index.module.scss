@@ -1,0 +1,100 @@
+@import '../../../sass/main.scss';
+.doctor-item {
+  background-color: $color-main-light-3;
+  overflow: hidden;
+  // border: 0.2rem solid $color-main-dark;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+  margin: 1rem;
+  min-width: 30rem;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 0.7rem;
+  &__columns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  &__part {
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    width: 15rem;
+  }
+  .special-info {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    min-width: fit-content;
+    width: 90%;
+    background-color: $color-main-light-2;
+    border-radius: 1rem;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+    margin: 0.5rem;
+    .title {
+      font-size: 1.6rem;
+      color: $color-secondary-dark;
+    }
+    span {
+      font-size: 1.5rem;
+    }
+  }
+  &__info {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    min-width: fit-content;
+    width: 12rem;
+    background-color: $color-main-light-2;
+    border-radius: 1rem;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+    margin: 0.5rem;
+    .title {
+      font-size: 1.4rem;
+      color: $color-secondary-dark;
+    }
+    span {
+      font-size: 1.5rem;
+    }
+
+    &__list {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: flex-start;
+
+      width: 12rem;
+      margin-bottom: 1rem;
+      span {
+        margin-bottom: 0.5rem;
+        font-size: 1.2rem;
+        background-color: $color-main-light-3;
+        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+        border-radius: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: fit-content;
+        width: 5rem;
+        padding: 0.3rem;
+        margin-left: 0.2rem;
+        color: $color-main-dark;
+      }
+    }
+  }
+  &__btns {
+    background-color: $color-main-light;
+    margin-top: 0.5rem;
+    border-radius: 1rem;
+    width: 12rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}

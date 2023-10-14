@@ -48,7 +48,8 @@ const NavBar = React.memo(({ title }) => {
             >
               الكتب
             </NavLink>
-            {role === 'SUPERADMIN' && role !== 'NOT' && (
+
+            {role !== 'PUBLISHER' && role !== 'NOT' && (
               <NavLink
                 to='/management/uploadData'
                 className={({ isActive, isPending }) =>
@@ -58,6 +59,7 @@ const NavBar = React.memo(({ title }) => {
                 رفع البيانات
               </NavLink>
             )}
+
             {role === 'SUPERADMIN' && role !== 'NOT' && (
               <NavLink
                 to='/management/adminsManagement'
@@ -68,6 +70,37 @@ const NavBar = React.memo(({ title }) => {
                 ادارة المسؤولين
               </NavLink>
             )}
+
+            {role === 'SUPERADMIN' && role !== 'NOT' && (
+              <NavLink
+                to='/management/doctors'
+                className={({ isActive, isPending }) =>
+                  isPending ? 'pending' : isActive ? styles['active-tab'] : ''
+                }
+              >
+                بيانات الدكاترة
+              </NavLink>
+            )}
+            {role === 'SUPERADMIN' && role !== 'NOT' && (
+              <NavLink
+                to='/management/courses'
+                className={({ isActive, isPending }) =>
+                  isPending ? 'pending' : isActive ? styles['active-tab'] : ''
+                }
+              >
+                بيانات المقررات
+              </NavLink>
+            )}
+            {role !== 'PUBLISHER' && role !== 'NOT' && (
+              <NavLink
+                to='/management/resetSystem'
+                className={({ isActive, isPending }) =>
+                  isPending ? 'pending' : isActive ? styles['active-tab'] : ''
+                }
+              >
+                اعادة التهيئة
+              </NavLink>
+            )}
             {role === 'SUPERADMIN' && role !== 'NOT' && (
               <NavLink
                 to='/settings/updateAccountInfo'
@@ -76,16 +109,6 @@ const NavBar = React.memo(({ title }) => {
                 }
               >
                 تحديث بيانات الحساب
-              </NavLink>
-            )}
-            {role === 'SUPERADMIN' && role !== 'NOT' && (
-              <NavLink
-                to='/management/resetSystem'
-                className={({ isActive, isPending }) =>
-                  isPending ? 'pending' : isActive ? styles['active-tab'] : ''
-                }
-              >
-                اعادة التهيئة
               </NavLink>
             )}
             <NavLink

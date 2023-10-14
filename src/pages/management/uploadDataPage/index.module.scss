@@ -1,10 +1,47 @@
 @import '../../../sass/main.scss';
 .upload-item {
+  background-color: $color-main-light-3;
   &__title {
     background-color: $color-main-dark;
     color: $color-main-light-3;
     padding: 1rem;
     border-radius: 1rem;
     font-size: 1.4rem;
+    margin-bottom: 1rem;
   }
+}
+.form-control {
+  border-color: $color-main-light;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  background-color: $color-main-light-3;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
+  margin: 1rem 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+  h3 {
+    font-size: 1.4rem;
+    margin: 0;
+    margin-bottom: 0.3rem;
+  }
+}
+.form-control select {
+  font-family: $main-font;
+  font-size: 1.3rem;
+  background-color: #fff;
+  border-radius: 0.7rem;
+  width: 20rem;
+  height: 5rem;
+  padding: 0.5rem;
+  border: 0.1rem solid $color-main-light;
+  margin: 0;
+  margin-left: 0.5rem;
+  // margin-bottom: 2rem;
+  cursor: pointer;
 }

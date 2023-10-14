@@ -298,6 +298,7 @@ const BooksPage = React.memo(() => {
           )}
         </div>
       </MainContainer>
+
       {/* ********** SUCCESS SNACKBAR ********** */}
       <Snackbar
         open={componentStates.success}

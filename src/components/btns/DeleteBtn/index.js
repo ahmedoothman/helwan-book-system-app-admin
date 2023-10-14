@@ -14,6 +14,7 @@ const DeleteBtn = React.memo(({ text, onPress }) => {
     <button onClick={clickHandler} className={styles['btn']}>
       <div>
         <img src={DeleteIcon} alt='delete' />
+        {text ? text : ''}
       </div>
     </button>
   );

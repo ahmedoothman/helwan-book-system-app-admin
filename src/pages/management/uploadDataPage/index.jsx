@@ -27,7 +27,7 @@ import {
   uploadDoctorService,
   uploadCoursesService,
 } from '../../../services/adminService';
-
+import { getFacultiesService } from '../../../services/adminsManagementService';
 /***************************************************************************/
 /* Name : UploadData React Component */
 /***************************************************************************/
@@ -41,6 +41,9 @@ const UploadData = React.memo(() => {
     componentStatesReducer,
     componentStatesInitialState
   );
+  // faculty
+  const [facultySelected, setFacultySelected] = useState('اختر الكلية');
+  const [facultiesData, setFacultiesData] = useState([]);
   /******************************************************************/
   /* useEffect */
   /******************************************************************/
@@ -49,6 +52,8 @@ const UploadData = React.memo(() => {
       // get role
       const { role } = await getRoleService();
       setRole(role);
+      // get faculties
+      await getFacultiesHandler();
     })();
   }, []);
   /******************************************************************/
@@ -63,6 +68,17 @@ const UploadData = React.memo(() => {
   const uploadDoctorsDataHandler = async (file) => {
     dispatchUploadDataStates({ type: 'PENDING-DOCTORS' });
     const formData = new FormData();
+    if (role === 'SUPERADMIN') {
+      // check if faculty selected
+      if (facultySelected === 'اختر الكلية') {
+        dispatchUploadDataStates({
+          type: 'ERROR',
+          errorMessage: 'يجب اختيار الكلية',
+        });
+        return;
+      }
+      formData.append('faculty', facultySelected);
+    }
     formData.append('file', file);
     const response = await uploadDoctorService(formData);
     if (response.status === 'success') {
@@ -71,6 +87,21 @@ const UploadData = React.memo(() => {
         successMessage: response.message,
       });
     } else {
+      dispatchUploadDataStates({
+        type: 'ERROR',
+        errorMessage: response.message,
+      });
+    }
+  };
+  /*********************************************************************/
+  /* getFacultiesHandler */
+  /*********************************************************************/
+  const getFacultiesHandler = async () => {
+    const response = await getFacultiesService();
+    if (response.status === 'success') {
+      setFacultiesData(response.data);
+    } else {
+      //dispacth errors
       dispatchUploadDataStates({
         type: 'ERROR',
         errorMessage: response.message,
@@ -100,23 +131,44 @@ const UploadData = React.memo(() => {
   return (
     <Fragment>
       <NavHeader title='رفع البيانات' />
-      {role === 'SUPERADMIN' && (
-        <MainContainer>
-          <br />
-          <br />
-          <div className={styles['upload-item']}>
-            <div className={styles['upload-item__title']}>
-              رفع بيانات الدكاترة
-            </div>
-            <div className={styles['upload-item__content']}>
-              <InputFileWide
-                onClick={uploadDoctorsDataHandler}
-                tag={'doctors'}
-                pending={uploadDataStates.pendingDoctors}
-              />
-            </div>
+
+      <MainContainer>
+        <br />
+        <br />
+        <div className={styles['upload-item']}>
+          <div className={styles['upload-item__title']}>
+            رفع بيانات الدكاترة
           </div>
-          <br />
+          <div className={styles['upload-item__content']}>
+            {role === 'SUPERADMIN' && role !== 'NOT' && (
+              <div className={styles['form-control']}>
+                <h3>الكلية</h3>
+                <select
+                  id='faculty'
+                  name='faculty'
+                  value={facultySelected}
+                  onChange={(e) => {
+                    setFacultySelected(e.target.value);
+                  }}
+                >
+                  <option value={'اختر الكلية'}>اختر الكلية</option>
+                  {facultiesData.map((el) => (
+                    <option value={el} key={el}>
+                      {el}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+            <InputFileWide
+              onClick={uploadDoctorsDataHandler}
+              tag={'doctors'}
+              pending={uploadDataStates.pendingDoctors}
+            />
+          </div>
+        </div>
+        <br />
+        {role === 'SUPERADMIN' && role !== 'NOT' && (
           <div className={styles['upload-item']}>
             <div className={styles['upload-item__title']}>
               رفع بيانات المقررات
@@ -129,9 +181,9 @@ const UploadData = React.memo(() => {
               />
             </div>
           </div>
-        </MainContainer>
-      )}
-      {role !== 'SUPERADMIN' && role !== 'NOT' && (
+        )}
+      </MainContainer>
+      {role !== 'SUPERADMIN' && role !== 'ADMIN' && role !== 'NOT' && (
         <Message text={'لا يمكنك الوصول لهذه الصفحة'} type='error' />
       )}
       {/* ********** SUCCESS SNACKBAR ********** */}

@@ -19,6 +19,12 @@ const BooksPage = React.lazy(() =>
 const AdminsManagementPage = React.lazy(() =>
   import('./pages/management/adminsManagementPage/index')
 );
+const DoctorsPage = React.lazy(() =>
+  import('./pages/management/doctorsPage/index')
+);
+const CoursesPage = React.lazy(() =>
+  import('./pages/management/coursesPage/index')
+);
 const UploadDataPage = React.lazy(() =>
   import('./pages/management/uploadDataPage/index')
 );
@@ -54,6 +60,8 @@ function App() {
             <Route path='adminsManagement' element={<AdminsManagementPage />} />
             <Route path='uploadData' element={<UploadDataPage />} />
             <Route path='resetSystem' element={<ResetSystem />} />
+            <Route path='doctors' element={<DoctorsPage />} />
+            <Route path='courses' element={<CoursesPage />} />
             <Route
               path='*'
               element={

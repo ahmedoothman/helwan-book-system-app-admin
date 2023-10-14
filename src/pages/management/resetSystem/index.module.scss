@@ -1,7 +1,16 @@
 @import '../../../sass/main.scss';
+.reset-item {
+  padding-top: 1rem;
+  &__title {
+    background-color: $color-main-dark;
+    color: $color-main-light-3;
+    padding: 1rem;
+    border-radius: 1rem;
+    font-size: 1.4rem;
+  }
+}
 
 .container {
-  height: 50vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

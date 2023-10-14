@@ -259,16 +259,249 @@ export const uploadCoursesService = async (data) => {
   }
 };
 /**********************************************/
-/* Name: resetSystemServices */
-/* Description: resetSystemServices */
+/* Name: resetSystemDoctorsServices */
+/* Description: resetSystemDoctorsServices */
 /**********************************************/
-export const resetSystemServices = async (data) => {
+export const resetSystemDoctorsServices = async (data) => {
   const token = Cookies.get('token');
 
   try {
     const response = await axios.post(
-      `${api_url}/api/v1/admin/resetSystem`,
+      `${api_url}/api/v1/admin/resetSystem/doctors`,
       data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return {
+      status: 'success',
+      message: response.data.message,
+    };
+  } catch (error) {
+    if (error.code === 'ERR_NETWORK') {
+      return {
+        status: 'error',
+        message: 'خطأ في الاتصال بالخادم',
+      };
+    } else if (error.response.data.message) {
+      return {
+        status: 'error',
+        message: error.response.data.message,
+      };
+    } else {
+      return {
+        status: 'error',
+        message: 'حدث خطأ ما',
+      };
+    }
+  }
+};
+/**********************************************/
+/* Name: resetSystemCoursesServices */
+/* Description: resetSystemCoursesServices */
+/**********************************************/
+export const resetSystemCoursesServices = async (data) => {
+  const token = Cookies.get('token');
+
+  try {
+    const response = await axios.post(
+      `${api_url}/api/v1/admin/resetSystem/courses`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return {
+      status: 'success',
+      message: response.data.message,
+    };
+  } catch (error) {
+    if (error.code === 'ERR_NETWORK') {
+      return {
+        status: 'error',
+        message: 'خطأ في الاتصال بالخادم',
+      };
+    } else if (error.response.data.message) {
+      return {
+        status: 'error',
+        message: error.response.data.message,
+      };
+    } else {
+      return {
+        status: 'error',
+        message: 'حدث خطأ ما',
+      };
+    }
+  }
+};
+/**********************************************/
+/* Name: resetSystemMaterialsServices */
+/* Description: resetSystemMaterialsServices */
+/**********************************************/
+export const resetSystemMaterialsServices = async (data) => {
+  const token = Cookies.get('token');
+
+  try {
+    const response = await axios.post(
+      `${api_url}/api/v1/admin/resetSystem/materials`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return {
+      status: 'success',
+      message: response.data.message,
+    };
+  } catch (error) {
+    if (error.code === 'ERR_NETWORK') {
+      return {
+        status: 'error',
+        message: 'خطأ في الاتصال بالخادم',
+      };
+    } else if (error.response.data.message) {
+      return {
+        status: 'error',
+        message: error.response.data.message,
+      };
+    } else {
+      return {
+        status: 'error',
+        message: 'حدث خطأ ما',
+      };
+    }
+  }
+};
+/**********************************************/
+/* Name: getAllDoctorsServices */
+/* Description: getAllDoctorsServices */
+/**********************************************/
+export const getAllDoctorsServices = async (data) => {
+  const token = Cookies.get('token');
+  try {
+    const response = await axios.post(
+      `${api_url}/api/v1/doctor/getDoctors`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return {
+      status: 'success',
+      doctors: response.data.data.doctors,
+      total: response.data.length,
+    };
+  } catch (error) {
+    if (error.code === 'ERR_NETWORK') {
+      return {
+        status: 'error',
+        message: 'خطأ في الاتصال بالخادم',
+      };
+    } else if (error.response.data.message) {
+      return {
+        status: 'error',
+        message: error.response.data.message,
+      };
+    } else {
+      return {
+        status: 'error',
+        message: 'حدث خطأ ما',
+      };
+    }
+  }
+};
+
+/**********************************************/
+/* Name: getAllCoursesServices */
+/* Description: getAllCoursesServices */
+/**********************************************/
+export const getAllCoursesServices = async (data) => {
+  const token = Cookies.get('token');
+  try {
+    const response = await axios.post(`${api_url}/api/v1/course`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return {
+      status: 'success',
+      courses: response.data.data.courses,
+      total: response.data.length,
+    };
+  } catch (error) {
+    if (error.code === 'ERR_NETWORK') {
+      return {
+        status: 'error',
+        message: 'خطأ في الاتصال بالخادم',
+      };
+    } else if (error.response.data.message) {
+      return {
+        status: 'error',
+        message: error.response.data.message,
+      };
+    } else {
+      return {
+        status: 'error',
+        message: 'حدث خطأ ما',
+      };
+    }
+  }
+};
+/**********************************************/
+/* Name: deleteDoctorServices */
+/* Description: deleteDoctorServices */
+/**********************************************/
+export const deleteDoctorServices = async (doctorId) => {
+  const token = Cookies.get('token');
+  try {
+    const response = await axios.delete(
+      `${api_url}/api/v1/doctor/deleteDoctor/${doctorId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return {
+      status: 'success',
+      message: response.data.message,
+    };
+  } catch (error) {
+    if (error.code === 'ERR_NETWORK') {
+      return {
+        status: 'error',
+        message: 'خطأ في الاتصال بالخادم',
+      };
+    } else if (error.response.data.message) {
+      return {
+        status: 'error',
+        message: error.response.data.message,
+      };
+    } else {
+      return {
+        status: 'error',
+        message: 'حدث خطأ ما',
+      };
+    }
+  }
+};
+/**********************************************/
+/* Name: deleteDoctorServices */
+/* Description: deleteDoctorServices */
+/**********************************************/
+export const deleteCourseServices = async (courseId) => {
+  const token = Cookies.get('token');
+  try {
+    const response = await axios.delete(
+      `${api_url}/api/v1/course/${courseId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

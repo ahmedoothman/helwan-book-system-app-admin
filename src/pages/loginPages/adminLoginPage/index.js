@@ -21,6 +21,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 // services
 import { loginRequest } from '../../../services/adminService';
+// Cookies js
+import Cookies from 'js-cookie';
 /***************************************************************************/
 /* Name : LoginPage React Component */
 /***************************************************************************/
@@ -104,7 +106,12 @@ const LoginPage = React.memo(() => {
   /* useEffect */
   /******************************************************************/
   useEffect(() => {
-    (async () => {})();
+    (async () => {
+      const token = Cookies.get('token');
+      if (!!token) {
+        navigate('/management/books');
+      }
+    })();
   }, []);
   // snackbar state
   const handleCloseSnackbar = () => {

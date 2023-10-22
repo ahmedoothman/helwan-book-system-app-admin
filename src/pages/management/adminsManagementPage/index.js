@@ -170,7 +170,7 @@ const AdminsManagementPage = React.memo(() => {
     userNameRef.current.setInputValue(adminData.userName);
     phoneRef.current.setInputValue(adminData.phoneNumber);
     nameRef.current.setInputValue(adminData.name);
-
+    setRolesSelected(adminData.role);
     // set form open
     setFormOpen(true);
   };
@@ -348,7 +348,6 @@ const AdminsManagementPage = React.memo(() => {
       userName: userNameRef.current.getInputValue(),
       phoneNumber: phoneRef.current.getInputValue(),
       faculty: rolesSelected == 'ADMIN' ? facultySelected : undefined,
-      role: rolesSelected,
     };
     // vaiidate data
     const isValid = validateInput(data);
@@ -522,23 +521,25 @@ const AdminsManagementPage = React.memo(() => {
             <div className={styles['form-control']}>
               <Input title={'الموبايل'} type='text' ref={phoneRef} />
             </div>
-            <div className={styles['form-control']}>
-              <h3>الصلاحية</h3>
-              <select
-                id='role'
-                name='role'
-                value={rolesSelected}
-                onChange={(e) => {
-                  setRolesSelected(e.target.value);
-                }}
-              >
-                {rolesData.map((el) => (
-                  <option value={el.value} key={el.value}>
-                    {el.title}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {formType === 'add' && (
+              <div className={styles['form-control']}>
+                <h3>الصلاحية</h3>
+                <select
+                  id='role'
+                  name='role'
+                  value={rolesSelected}
+                  onChange={(e) => {
+                    setRolesSelected(e.target.value);
+                  }}
+                >
+                  {rolesData.map((el) => (
+                    <option value={el.value} key={el.value}>
+                      {el.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
             {rolesSelected === 'ADMIN' && (
               <div className={styles['form-control']}>
                 <h3>الكلية</h3>

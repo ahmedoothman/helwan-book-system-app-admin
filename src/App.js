@@ -45,7 +45,7 @@ function App() {
   useEffect(() => {}, []);
   return (
     <div className={styles['main-container']}>
-      <Header title={'منصة الكتاب الالكتروني'} />
+      <Header title={'منصة الكتاب الالكتروني - مدير النظام'} />
       <Suspense fallback={<Message text='جاري التحميل' type={'load'} />}>
         <Routes>
           {/* **************************************** */}
